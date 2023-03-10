@@ -4,6 +4,7 @@
 #include <gpio.h>
 #include <rtc.h>
 #include <tmr2.h>
+#include <tmr3.h>
 #include "main.h"
 #include "widgets/clock.h"
 #include "widgets/stopwatch.h"
@@ -28,6 +29,7 @@ int main(void) {
 
 	RTC_Init();
 	TIM2_Init(MenuSize*2);
+	TIM3_Init();
 	MX_GPIO_Init();
 
 	RTC_DateTypeDef todayDate;
