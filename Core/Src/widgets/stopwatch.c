@@ -12,8 +12,8 @@
 
 #include "../widgets/constants.h"
 #include "../widgets/stopwatch.h"
+#include "../timers/timers.h"
 
-#define MENU_SIZE	2
 
 static bool isStarted = false;
 char start[] = "START";
@@ -33,7 +33,7 @@ void DrawStopwatch(encoderData_t *count, uint8_t secBubbles)
 		strcpy(stateBtn, start);
 	}
 
-	//resizeMenuCounter(MENU_SIZE*2);
+	resizeMenuCounter(STOPWATCH_MENU_SIZE*2, 0);
 
 	while(exit)
 	{

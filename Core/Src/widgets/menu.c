@@ -13,6 +13,7 @@
 #include "menu.h"
 #include "../widgets/stopwatch.h"
 #include "../widgets/ChangBackground.h"
+#include "../rtc/rtc.h"
 
 
 void DrawMenu(encoderData_t *count)
@@ -38,7 +39,8 @@ void DrawMenu(encoderData_t *count)
 			if(count->isEnter)
 			{
 				count->isEnter = false;
-
+				RTC_GetTime(&timeNow);
+				DrawTimeSetting(count, &timeNow, &todayDate);
 			}
 			break;
 		case CHANG_BACKGROUND:

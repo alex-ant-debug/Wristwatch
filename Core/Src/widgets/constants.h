@@ -7,6 +7,12 @@
 #define xC	120
 #define yC	120
 
+#define MENU_ZIZE				3
+#define STOPWATCH_MENU_SIZE		3
+#define TIME_SETTING_SIZE		9
+#define BACKGROUND_SIZE			4
+
+
 typedef struct encoderData_t
 {
 	bool isEnter;

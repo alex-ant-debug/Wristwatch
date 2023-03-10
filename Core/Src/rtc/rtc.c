@@ -45,3 +45,9 @@ RTC_DateTypeDef *RTC_GetTodayDate(void)
 {
 	return &sDate;
 }
+
+void setHourFormat(uint32_t format)
+{
+	hrtc.Init.HourFormat = format;
+	HAL_RTC_Init(&hrtc);
+}

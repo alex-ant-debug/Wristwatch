@@ -56,10 +56,11 @@ void TIM2_Init(uint32_t period)
 	HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_ALL);
 }
 
-void resizeMenuCounter(uint32_t period)
+void resizeMenuCounter(uint32_t period, uint32_t startPosition)
 {
 	HAL_TIM_Encoder_Stop(&htim2, TIM_CHANNEL_ALL);
 	TIM2->ARR = period;
+	TIM2->CNT = startPosition;
 	HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_ALL);
 }
 

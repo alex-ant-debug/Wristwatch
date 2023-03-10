@@ -12,7 +12,7 @@
 #include "widgets/ChangBackground.h"
 
 
-#define MenuSize	3
+
 
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
@@ -28,16 +28,15 @@ int main(void) {
 	SystemClock_Config();
 
 	RTC_Init();
-	TIM2_Init(MenuSize*2);
+	TIM2_Init(MENU_ZIZE*2);
 	TIM3_Init();
 	MX_GPIO_Init();
 
-	RTC_DateTypeDef todayDate;
+
 	todayDate.Date = 8;
 	todayDate.Month = 3;
 	todayDate.Year = 23;
 
-	RTC_TimeTypeDef timeNow;
 	timeNow.Hours = 19;
 	timeNow.Minutes = 23;
 	timeNow.Seconds = 45;

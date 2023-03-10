@@ -11,6 +11,6 @@
 #include <stdint.h>
 
 void TIM2_Init(uint32_t period);
-void resizeMenuCounter(uint32_t period);
+void resizeMenuCounter(uint32_t period, uint32_t startPosition);
 
 #endif /* SRC_TIMERS_TMR2_H_ */
