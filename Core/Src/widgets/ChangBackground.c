@@ -12,47 +12,58 @@
 #include "../widgets/ChangBackground.h"
 
 
-void DrawChangBackground(encoderData_t *count, uint8_t light)
+void DrawChangBackground(encoderData_t *count)
 {
 	uint8_t exit = 1;
 
 	while(exit)
 	{
-		uint16_t bgColor, digitColor;
 		uint16_t firstColor, secondColor, thirdColor, fourthColor;
 
-		bgColor = (light)? WHITE: BLACK;
-		digitColor = (light)? BLACK: WHITE;
+		selectedText = GREEN;
+
+		switch (bgColor) {
+		case BLACK:
+			digitColor = WHITE;
+			break;
+		case BLUE:
+			digitColor = BLACK;
+			break;
+		case WHITE:
+			digitColor = BLACK;
+			break;
+		default: break;
+		}
 
 		firstColor = secondColor = thirdColor = fourthColor = digitColor;
 
 		switch (count->encoderPosition) {
 		case COLOR_WHITE:
-			firstColor = BLUE;
+			firstColor = selectedText;
 			if(count->isEnter)
 			{
 				count->isEnter = false;
-
+				bgColor = WHITE;
 			}
 			break;
 		case COLOR_BLACK:
-			secondColor = BLUE;
+			secondColor = selectedText;
 			if(count->isEnter)
 			{
 				count->isEnter = false;
-
+				bgColor = BLACK;
 			}
 			break;
 		case COLOR_BLUE:
-			thirdColor = BLUE;
+			thirdColor = selectedText;
 			if(count->isEnter)
 			{
 				count->isEnter = false;
-
+				bgColor = BLUE;
 			}
 			break;
 		case COLOR_EXIT:
-			fourthColor = BLUE;
+			fourthColor = selectedText;
 			if(count->isEnter)
 			{
 				count->isEnter = false;

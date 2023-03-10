@@ -53,12 +53,12 @@ int main(void) {
 		if(encoder.isEnter)
 		{
 			encoder.isEnter = false;
-			DrawMenu(&encoder, 0);
+			DrawMenu(&encoder);
 		}
 		else
 		{
 			RTC_GetTime(&timeNow);
-			DrawClock(&timeNow, &todayDate, 0, 0);
+			DrawClock(&timeNow, &todayDate, 0);
 		}
 	}
 }

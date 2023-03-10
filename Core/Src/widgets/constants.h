@@ -13,4 +13,5 @@ typedef struct encoderData_t
 	uint8_t encoderPosition;
 }encoderData_t;
 
+
 #endif /* SRC_WIDGETS_CONSTANTS_H_ */

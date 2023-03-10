@@ -11,28 +11,69 @@
 #include <math.h>
 
 #include "../widgets/constants.h"
+#include "../widgets/stopwatch.h"
 
-void DrawStopwatch(uint32_t seconds, uint8_t sixtySeconds, uint8_t light, uint8_t secBubbles)
+char start[] = "START";
+char stop[] = "STOP";
+
+void DrawStopwatch(encoderData_t *count, uint8_t secBubbles)
 {
 	uint8_t exit = 1;
+	char state[6] = {0};
+	strcpy(state, start);
 
 	while(exit)
 	{
+		uint32_t seconds = 0;
+		uint8_t sixtySeconds = 0;
+		uint16_t firstColor, secondColor, thirdColor;
+		uint16_t secArcColor = (bgColor == WHITE)? MAGENTA: GREEN;
 
-		uint16_t bgColor, digitColor, secArcColor;
+		firstColor = secondColor = thirdColor = digitColor;
 
-		bgColor = (light)? WHITE: BLACK;
-		digitColor = (light)? BLACK: WHITE;
-		secArcColor = (light)? MAGENTA: GREEN;
+		switch (count->encoderPosition) {
+		case START_STOP:
+			firstColor = selectedText;
+			if(count->isEnter)
+			{
+				count->isEnter = false;
+				strcpy(state, stop);
+			}
+			else
+			{
+				count->isEnter = false;
+				strcpy(state, start);
+			}
+			break;
+		case RESET_STOPWATCH:
+			secondColor = selectedText;
+			if(count->isEnter)
+			{
+				count->isEnter = false;
+				seconds = 0;
+				sixtySeconds = 0;
+			}
+			break;
+		case EXIT_STOPWATCH:
+			thirdColor = selectedText;
+			if(count->isEnter)
+			{
+				count->isEnter = false;
+				exit = 0;
+			}
+
+			break;
+		default: break;
+		}
 
 		dispcolor_FillScreen(bgColor);
 
 		dispcolor_printf(60, 55, FONTID_64F, digitColor, "%08d", seconds);
-		dispcolor_printf(100, 130, FONTID_16F, digitColor, "%s", "Start");
-		dispcolor_printf(100, 150, FONTID_16F, BLUE, "%s", "Reset");
-		dispcolor_printf(100, 170, FONTID_16F, digitColor, "%s", "Exit");
+		dispcolor_printf(105, 130, FONTID_16F, firstColor, "%s", state);
+		dispcolor_printf(95, 150, FONTID_16F, secondColor, "%s", "RESET");
+		dispcolor_printf(105, 170, FONTID_16F, thirdColor, "%s", "EXIT");
 
-		// ��������� ����
+
 		if (!sixtySeconds)
 			sixtySeconds = 60;
 		if (secBubbles) {

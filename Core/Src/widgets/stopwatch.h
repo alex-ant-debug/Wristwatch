@@ -8,6 +8,15 @@
 #ifndef SRC_WIDGETS_STOPWATCH_H_
 #define SRC_WIDGETS_STOPWATCH_H_
 
-void DrawStopwatch(uint32_t seconds, uint8_t sixtySeconds, uint8_t light, uint8_t secBubbles);
+#include "constants.h"
+
+enum menuStopwatch
+{
+	START_STOP,
+	RESET_STOPWATCH,
+	EXIT_STOPWATCH
+};
+
+void DrawStopwatch(encoderData_t *count, uint8_t secBubbles);
 
 #endif /* SRC_WIDGETS_STOPWATCH_H_ */

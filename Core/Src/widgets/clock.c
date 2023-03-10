@@ -20,14 +20,9 @@ static void DrawArrow(int16_t angle, uint8_t lineLen, uint8_t thick,
 
 void DrawClock(RTC_TimeTypeDef *time,
 		       RTC_DateTypeDef *date,
-		       uint8_t light,
 			   uint8_t secBubbles)
 {
-	uint16_t bgColor, digitColor, secArcColor;
-
-	bgColor = (light)? WHITE: BLACK;
-	digitColor = (light)? BLACK: WHITE;
-	secArcColor = (light)? MAGENTA: GREEN;
+	uint16_t secArcColor = (bgColor == WHITE)? MAGENTA: GREEN;
 
 	dispcolor_FillScreen(bgColor);
 

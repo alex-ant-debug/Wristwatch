@@ -11,32 +11,30 @@
 #include <math.h>
 
 #include "menu.h"
+#include "../widgets/stopwatch.h"
+#include "../widgets/ChangBackground.h"
 
 
-void DrawMenu(encoderData_t *count, uint8_t light)
+void DrawMenu(encoderData_t *count)
 {
 	uint8_t exit = 1;
 	while(exit)
 	{
-		uint16_t bgColor, digitColor;
 		uint16_t firstColor, secondColor, thirdColor, fourthColor;
-
-		bgColor = (light)? WHITE: BLACK;
-		digitColor = (light)? BLACK: WHITE;
 
 		firstColor = secondColor = thirdColor = fourthColor = digitColor;
 
 		switch (count->encoderPosition) {
 		case STOPWATCH:
-			firstColor = BLUE;
+			firstColor = selectedText;
 			if(count->isEnter)
 			{
 				count->isEnter = false;
-				DrawStopwatch(5, 10, 0, 0);
+				DrawStopwatch(count, 0);
 			}
 			break;
 		case TIME_SETTING:
-			secondColor = BLUE;
+			secondColor = selectedText;
 			if(count->isEnter)
 			{
 				count->isEnter = false;
@@ -44,15 +42,15 @@ void DrawMenu(encoderData_t *count, uint8_t light)
 			}
 			break;
 		case CHANG_BACKGROUND:
-			thirdColor = BLUE;
+			thirdColor = selectedText;
 			if(count->isEnter)
 			{
 				count->isEnter = false;
-				DrawChangBackground(count,  0);
+				DrawChangBackground(count);
 			}
 			break;
 		case EXIT:
-			fourthColor = BLUE;
+			fourthColor = selectedText;
 			if(count->isEnter)
 			{
 				count->isEnter = false;

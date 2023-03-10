@@ -18,6 +18,6 @@ enum menuStructure
 	EXIT
 };
 
-void DrawMenu(encoderData_t *count,  uint8_t light);
+void DrawMenu(encoderData_t *count);
 
 #endif /* SRC_WIDGETS_MENU_H_ */

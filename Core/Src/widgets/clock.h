@@ -6,7 +6,6 @@
 
 void DrawClock(RTC_TimeTypeDef *time,
 		       RTC_DateTypeDef *date,
-		       uint8_t light,
 			   uint8_t secBubbles);
 
 

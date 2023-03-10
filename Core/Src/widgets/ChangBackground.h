@@ -18,6 +18,6 @@ enum colorStructure
 	COLOR_EXIT
 };
 
-void DrawChangBackground(encoderData_t *count, uint8_t light);
+void DrawChangBackground(encoderData_t *count);
 
 #endif /* SRC_WIDGETS_CHANGBACKGROUND_H_ */

@@ -41,6 +41,9 @@ typedef union
 #define YELLOW   0xFFE0 
 #define WHITE    0xFFFF
 
+uint16_t bgColor;
+uint16_t digitColor;
+uint16_t selectedText;
 
 void dispcolor_Init(uint8_t Width, uint8_t Height);
 void dispcolor_Update();

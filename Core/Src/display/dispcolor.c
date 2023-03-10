@@ -30,6 +30,10 @@ void dispcolor_Init(uint8_t Width, uint8_t Height) {
 #endif
 
 	dispcolor_ClearScreen();
+
+	bgColor = BLACK;
+	digitColor = WHITE;
+	selectedText = GREEN;
 }
 
 void dispcolor_Update() {
