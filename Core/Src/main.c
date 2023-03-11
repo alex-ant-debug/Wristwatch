@@ -32,21 +32,6 @@ int main(void) {
 	TIM3_Init();
 	MX_GPIO_Init();
 
-
-	todayDate.Date = 8;
-	todayDate.Month = 3;
-	todayDate.Year = 23;
-
-	timeNow.Hours = 19;
-	timeNow.Minutes = 23;
-	timeNow.Seconds = 45;
-	RTC_SetTime(&timeNow, &todayDate);
-
-	HAL_Delay(1);
-	RTC_GetTime(&timeNow);
-
-	srand(timeNow.SubSeconds);
-
 	dispcolor_Init(240, 240);
 
 	while (1)

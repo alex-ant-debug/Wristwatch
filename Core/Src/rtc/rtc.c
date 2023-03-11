@@ -51,3 +51,8 @@ void setHourFormat(uint32_t format)
 	hrtc.Init.HourFormat = format;
 	HAL_RTC_Init(&hrtc);
 }
+
+uint32_t getHourFormat(void)
+{
+	return hrtc.Init.HourFormat;
+}
