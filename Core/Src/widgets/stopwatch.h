@@ -12,11 +12,11 @@
 
 enum menuStopwatch
 {
-	START_STOP,
-	RESET_STOPWATCH,
-	EXIT_STOPWATCH
+    START_STOP,
+    RESET_STOPWATCH,
+    EXIT_STOPWATCH
 };
 
-void DrawStopwatch(encoderData_t *count, uint8_t secBubbles);
+void drawStopwatch(encoderData_t *count, uint8_t secBubbles);
 
 #endif /* SRC_WIDGETS_STOPWATCH_H_ */

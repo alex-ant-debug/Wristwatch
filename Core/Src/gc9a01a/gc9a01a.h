@@ -2,10 +2,10 @@
 #define _GC9A01A_H
 
 
-#define GC9A01_DIRECT_MODE		0
-#define GC9A01_BUFFER_MODE		1
+#define GC9A01_DIRECT_MODE        0
+#define GC9A01_BUFFER_MODE        1
 
-#define GC9A01_MODE 			GC9A01_BUFFER_MODE
+#define GC9A01_MODE             GC9A01_BUFFER_MODE
 
 
 #define GC9A01A_SPI_periph       SPI1

@@ -3091,7 +3091,7 @@ const uint8_t f6x8m_table[f6x8m_NOFCHARS][8 + 2] = {
 //==============================================================================
 uint8_t *f6x8m_GetCharTable(char Char)
 {
-	uint8_t charIdx = *((uint8_t *) &Char);
-	return (uint8_t *)(&f6x8m_table[charIdx][0]);
+    uint8_t charIdx = *((uint8_t *) &Char);
+    return (uint8_t *)(&f6x8m_table[charIdx][0]);
 }
 //==============================================================================

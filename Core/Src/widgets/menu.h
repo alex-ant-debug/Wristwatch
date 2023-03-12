@@ -12,10 +12,10 @@
 
 enum menuStructure
 {
-	STOPWATCH,
-	TIME_SETTING,
-	CHANG_BACKGROUND,
-	EXIT
+    STOPWATCH,
+    TIME_SETTING,
+    CHANG_BACKGROUND,
+    EXIT
 };
 
 void DrawMenu(encoderData_t *count);

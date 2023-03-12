@@ -5130,7 +5130,7 @@ const uint8_t f10x16f_table[f10x16f_NOFCHARS][32 + 2] = {
 //==============================================================================
 uint8_t *f10x16f_GetCharTable(char Char)
 {
-	uint8_t charIdx = *((uint8_t *) &Char);
-	return (uint8_t *)(&f10x16f_table[charIdx][0]);
+    uint8_t charIdx = *((uint8_t *) &Char);
+    return (uint8_t *)(&f10x16f_table[charIdx][0]);
 }
 //==============================================================================

@@ -10,22 +10,22 @@
 
 typedef struct
 {
-	uint16_t r:5;
-	uint16_t g:6;
-	uint16_t b:5;
+    uint16_t r:5;
+    uint16_t g:6;
+    uint16_t b:5;
 } sRGB565;
 
 typedef struct
 {
-	uint8_t r;
-	uint8_t g;
-	uint8_t b;
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
 } sRGB888;
 
 typedef union
 {
-	sRGB565 rgb;
-	uint16_t word;
+    sRGB565 rgb;
+    uint16_t word;
 } uRGB565;
 
 
@@ -48,25 +48,16 @@ uint16_t selectedText;
 void dispcolorInit(uint8_t Width, uint8_t Height);
 void dispcolorUpdate();
 void dispcolorClearScreen(void);
-void dispcolorSetBrightness(uint8_t Value);
 void dispcolorFillScreen(uint16_t color);
 void dispcolorDrawPixel(int16_t X, int16_t Y, uint16_t color);
 void dispcolorDrawLine(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color);
 void dispcolorDrawLine2(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color, uint8_t thick);
 void dispcolorDrawLine_Wu(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color);
-void dispcolorDrawRectangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color);
-void dispcolorFillRectangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t fillcolor);
-void dispcolorDrawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color);
-void dispcolorDrawTriangle_Wu(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color);
-void dispcolorFillTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color);
-void dispcolorDrawCircle(int16_t x0, int16_t y0, int16_t radius, uint16_t color, uint8_t correction);
 void dispcolorDrawCircle_Wu(int16_t x0, int16_t y0, int16_t radius, uint16_t color);
 void dispcolorFillCircle(int16_t x0, int16_t y0, int16_t radius, uint16_t color);
 void dispcolorFillCircleWu(int16_t x0, int16_t y0, int16_t radius, uint16_t color);
 void dispcolorDrawArc(int16_t x0, int16_t y0, int16_t radius, int16_t startAngle, int16_t endAngle, uint16_t color, uint8_t correction);
 int16_t dispcolorDrawString(int16_t X, int16_t Y, uint8_t FontID, char *Str, uint16_t TextColor);
-int16_t dispcolorDrawString_Bg(int16_t X, int16_t Y, uint8_t FontID, char *Str, uint16_t TextColor, uint16_t BgColor);
 int16_t dispcolorPrintf(int16_t X, int16_t Y, uint8_t FontID, uint16_t TextColor, const char *args, ...);
-int16_t dispcolorPrintfBg(int16_t X, int16_t Y, uint8_t FontID, uint16_t TextColor, uint16_t BgColor, const char *args, ...);
 
 #endif

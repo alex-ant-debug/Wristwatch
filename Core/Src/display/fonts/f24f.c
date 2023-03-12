@@ -383,16 +383,16 @@ const uint8_t f24f_table4[48 + 2] =
 //==============================================================================
 uint8_t *f24f_GetCharTable(char Char)
 {
-	//
-	if ((Char >= 0x30) && (Char <= 0x39))
-	    return (uint8_t *)(&f24f_table[Char - 0x30][0]);
-	if (Char == 0x20)
-		return (uint8_t *) f24f_table2;
-	if (Char == 0x2E)
-		return (uint8_t *) f24f_table3;
-	if (Char == 0xB0)
-		return (uint8_t *) f24f_table4;
+    //
+    if ((Char >= 0x30) && (Char <= 0x39))
+        return (uint8_t *)(&f24f_table[Char - 0x30][0]);
+    if (Char == 0x20)
+        return (uint8_t *) f24f_table2;
+    if (Char == 0x2E)
+        return (uint8_t *) f24f_table3;
+    if (Char == 0xB0)
+        return (uint8_t *) f24f_table4;
 
-	return 0;
+    return 0;
 }
 //==============================================================================

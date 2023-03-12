@@ -12,30 +12,30 @@
 
 void DrawClock(void)
 {
-	RTC_TimeTypeDef time = { 0 };
-	RTC_DateTypeDef date = { 0 };
+    RTC_TimeTypeDef time = { 0 };
+    RTC_DateTypeDef date = { 0 };
 
-	uint16_t secArcColor = (bgColor == WHITE)? MAGENTA: GREEN;
+    uint16_t secArcColor = (bgColor == WHITE)? MAGENTA: GREEN;
 
-	RTC_GetTime(&time, &date);
+    RTC_GetTime(&time, &date);
 
-	dispcolorFillScreen(bgColor);
+    dispcolorFillScreen(bgColor);
 
-	dispcolorPrintf(65, 45, FONTID_24F, digitColor, "%02d.%02d.20%02d", date.Date,
-			date.Month, date.Year);
+    dispcolorPrintf(65, 45, FONTID_24F, digitColor, "%02d.%02d.20%02d", date.Date,
+            date.Month, date.Year);
 
-	dispcolorPrintf(55, 85, FONTID_64F, digitColor, "%02d : %02d : %02d", time.Hours,
-			time.Minutes, time.Seconds);
+    dispcolorPrintf(55, 85, FONTID_64F, digitColor, "%02d : %02d : %02d", time.Hours,
+            time.Minutes, time.Seconds);
 
-	if (!time.Seconds)
-	{
-		time.Seconds = 60;
-	}
+    if (!time.Seconds)
+    {
+        time.Seconds = 60;
+    }
 
-	dispcolorDrawArc(xC, yC, 119, 0, time.Seconds * 6, secArcColor, 5);
+    dispcolorDrawArc(xC, yC, 119, 0, time.Seconds * 6, secArcColor, 5);
 
-	dispcolorUpdate();
+    dispcolorUpdate();
 
-	HAL_Delay(50);
+    HAL_Delay(50);
 }
 

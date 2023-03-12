@@ -13,19 +13,17 @@
 
 enum menuMeaningful
 {
-	DAYS,
-	MONTHS,
-	YEARS,
-	HOURS,
-	MINUTES,
-	SECONDS,
-	HOURFORMAT,
-	SAVE,
-	EXIT_SETUP
+    DAYS,
+    MONTHS,
+    YEARS,
+    HOURS,
+    MINUTES,
+    SECONDS,
+    HOURFORMAT,
+    SAVE,
+    EXIT_SETUP
 };
 
-void DrawTimeSetting(encoderData_t *count,
-		             RTC_TimeTypeDef *time,
-				     RTC_DateTypeDef *date);
+void drawTimeSetting(encoderData_t *count);
 
 #endif /* SRC_WIDGETS_TIMESETTING_H_ */

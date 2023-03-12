@@ -12,12 +12,12 @@
 
 enum colorStructure
 {
-	COLOR_WHITE,
-	COLOR_BLACK,
-	COLOR_BLUE,
-	COLOR_EXIT
+    COLOR_WHITE,
+    COLOR_BLACK,
+    COLOR_BLUE,
+    COLOR_EXIT
 };
 
-void DrawChangBackground(encoderData_t *count);
+void drawChangBackground(encoderData_t *count);
 
 #endif /* SRC_WIDGETS_CHANGBACKGROUND_H_ */

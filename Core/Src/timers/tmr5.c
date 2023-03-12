@@ -54,5 +54,5 @@ void TIM5_Init(void)
 
 void startTim5(void)
 {
-	HAL_TIM_Base_Start_IT(&htim5);
+    HAL_TIM_Base_Start_IT(&htim5);
 }
