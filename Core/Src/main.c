@@ -43,7 +43,7 @@ int main(void) {
 		}
 		else
 		{
-			RTC_GetTime(&timeNow);
+			RTC_GetTime(&timeNow, &todayDate);
 			DrawClock(&timeNow, &todayDate, 0);
 		}
 	}

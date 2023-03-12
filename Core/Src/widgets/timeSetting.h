@@ -9,6 +9,7 @@
 #define SRC_WIDGETS_TIMESETTING_H_
 
 #include "constants.h"
+#include <stdbool.h>
 
 enum menuStructure
 {

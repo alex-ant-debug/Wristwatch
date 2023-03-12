@@ -9,13 +9,13 @@
 
 #define AMOUNT_DAYS			31
 #define NUMBER_MONTHS		12
-#define NUMBER_YEARS		99
-#define NUMBER_HOURS_24		23
+#define NUMBER_YEARS		100
+#define NUMBER_HOURS_24		24
 #define NUMBER_HOURS_12		12
-#define NUMBER_MINUTES		59
-#define NUMBER_SECONDS		59
+#define NUMBER_MINUTES		60
+#define NUMBER_SECONDS		60
 
-
+#define START_MENU				0
 #define MENU_ZIZE				3
 #define STOPWATCH_MENU_SIZE		3
 #define TIME_SETTING_SIZE		9

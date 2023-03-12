@@ -10,12 +10,46 @@
 #include <font.h>
 #include <math.h>
 
-#include "../timers/tmr2.h"
 #include "timeSetting.h"
+#include "../timers/tmr2.h"
 #include "../rtc/rtc.h"
 
 #define DOUBLING(val)		(val)*2
 
+
+static void parameterChange(encoderData_t *count,
+					        uint8_t menuItem,
+					        bool *isParameterChanges,
+					        uint8_t maxParameterValue,
+					        uint8_t *parameter,
+							bool isOnePlus)
+{
+	if(count->isEnter)
+	{
+		if(*isParameterChanges)
+		{
+			*isParameterChanges = false;
+			resizeMenuCounter(DOUBLING(TIME_SETTING_SIZE), menuItem);
+			count->encoderPosition = menuItem;
+			TIM2->CNT = menuItem*2;
+		}
+		else
+		{
+			*isParameterChanges = true;
+			resizeMenuCounter(DOUBLING(maxParameterValue), (*parameter)*2);
+			count->encoderPosition = *parameter;
+		}
+		count->isEnter = false;
+	}
+	else
+	{
+		if(*isParameterChanges)
+		{
+			uint8_t one = (isOnePlus)? 1: 0;
+			*parameter = (maxParameterValue < count->encoderPosition + one)? one: count->encoderPosition + one;
+		}
+	}
+}
 
 void DrawTimeSetting(encoderData_t *count,
 		             RTC_TimeTypeDef *time,
@@ -33,8 +67,9 @@ void DrawTimeSetting(encoderData_t *count,
 	uint8_t menuPosition = 0;
 	bool isParameterChanges = false;
 
-
-	resizeMenuCounter(TIME_SETTING_SIZE*2, 0);
+	resizeMenuCounter(TIME_SETTING_SIZE*2, START_MENU);
+	count->encoderPosition = START_MENU;
+	TIM2->CNT = START_MENU;
 
 	uint8_t exit = 1;
 	while(exit)
@@ -50,169 +85,28 @@ void DrawTimeSetting(encoderData_t *count,
 		switch (menuPosition) {
 		case DAYS:
 			colorParameter[DAYS] = selectedText;
-			if(count->isEnter)
-			{
-				if(isParameterChanges)
-				{
-					isParameterChanges = false;
-					resizeMenuCounter(DOUBLING(TIME_SETTING_SIZE), DAYS);
-					count->encoderPosition = menuPosition = DAYS;
-				}
-				else
-				{
-					isParameterChanges = true;
-					resizeMenuCounter(DOUBLING(AMOUNT_DAYS), DOUBLING(day));
-					count->encoderPosition = day;
-				}
-				count->isEnter = false;
-			}
-			else
-			{
-				if(isParameterChanges)
-				{
-					day = (AMOUNT_DAYS < count->encoderPosition + 1)? 1: count->encoderPosition + 1;
-				}
-			}
+			parameterChange(count, DAYS, &isParameterChanges, AMOUNT_DAYS, &day, true);
 			break;
 		case MONTHS:
 			colorParameter[MONTHS] = selectedText;
-			if(count->isEnter)
-			{
-				if(isParameterChanges)
-				{
-					isParameterChanges = false;
-					resizeMenuCounter(DOUBLING(TIME_SETTING_SIZE), DOUBLING(MONTHS));
-					count->encoderPosition = menuPosition = MONTHS;
-				}
-				else
-				{
-					isParameterChanges = true;
-					resizeMenuCounter(DOUBLING(NUMBER_MONTHS), DOUBLING(month));
-					count->encoderPosition = month;
-				}
-				count->isEnter = false;
-			}
-			else
-			{
-				if(isParameterChanges)
-				{
-					month = (NUMBER_MONTHS < count->encoderPosition + 1)? 1: count->encoderPosition + 1;
-				}
-			}
+			parameterChange(count, MONTHS, &isParameterChanges, NUMBER_MONTHS, &month, true);
 			break;
 		case YEARS:
 			colorParameter[YEARS] = selectedText;
-			if(count->isEnter)
-			{
-				if(isParameterChanges)
-				{
-					isParameterChanges = false;
-					resizeMenuCounter(DOUBLING(TIME_SETTING_SIZE), DOUBLING(YEARS));
-					count->encoderPosition = menuPosition = YEARS;
-				}
-				else
-				{
-					isParameterChanges = true;
-					resizeMenuCounter(DOUBLING(NUMBER_YEARS), DOUBLING(year));
-					count->encoderPosition = year;
-				}
-				count->isEnter = false;
-			}
-			else
-			{
-				if(isParameterChanges)
-				{
-					year = (NUMBER_YEARS < count->encoderPosition + 1)? 1: count->encoderPosition + 1;
-				}
-			}
+			parameterChange(count, YEARS, &isParameterChanges, NUMBER_YEARS, &year, false);
 			break;
 		case HOURS:
 			colorParameter[HOURS] = selectedText;
 			uint32_t formatHours = (hourFormat == RTC_HOURFORMAT_24)? NUMBER_HOURS_24: NUMBER_HOURS_12;
-			if(count->isEnter)
-			{
-				if(isParameterChanges)
-				{
-					isParameterChanges = false;
-					resizeMenuCounter(DOUBLING(TIME_SETTING_SIZE), DOUBLING(HOURS));
-					count->encoderPosition = menuPosition = HOURS;
-				}
-				else
-				{
-					isParameterChanges = true;
-					resizeMenuCounter(DOUBLING(formatHours), DOUBLING(hours));
-					count->encoderPosition = hours;
-				}
-				count->isEnter = false;
-			}
-			else
-			{
-				if(isParameterChanges)
-				{
-//					hours = (count->encoderPosition > formatHours)? 0: count->encoderPosition;
-					if(count->encoderPosition > formatHours)
-					{
-						hours = 0;
-						count->encoderPosition = 0;
-					}
-					else
-					{
-						hours = count->encoderPosition;
-					}
-				}
-			}
+			parameterChange(count, HOURS, &isParameterChanges, formatHours, &hours, false);
 			break;
 		case MINUTES:
 			colorParameter[MINUTES] = selectedText;
-			if(count->isEnter)
-			{
-				if(isParameterChanges)
-				{
-					isParameterChanges = false;
-					resizeMenuCounter(DOUBLING(TIME_SETTING_SIZE), DOUBLING(MINUTES));
-					count->encoderPosition = menuPosition = MINUTES;
-				}
-				else
-				{
-					isParameterChanges = true;
-					resizeMenuCounter(DOUBLING(NUMBER_MINUTES), DOUBLING(minutes));
-					count->encoderPosition = minutes;
-				}
-				count->isEnter = false;
-			}
-			else
-			{
-				if(isParameterChanges)
-				{
-					minutes = (NUMBER_MINUTES < count->encoderPosition + 1)? 0: count->encoderPosition + 1;
-				}
-			}
+			parameterChange(count, MINUTES, &isParameterChanges, NUMBER_MINUTES, &minutes, false);
 			break;
 		case SECONDS:
 			colorParameter[SECONDS] = selectedText;
-			if(count->isEnter)
-			{
-				if(isParameterChanges)
-				{
-					isParameterChanges = false;
-					resizeMenuCounter(DOUBLING(TIME_SETTING_SIZE), DOUBLING(SECONDS));
-					count->encoderPosition = menuPosition = SECONDS;
-				}
-				else
-				{
-					isParameterChanges = true;
-					resizeMenuCounter(DOUBLING(NUMBER_SECONDS), DOUBLING(seconds));
-					count->encoderPosition = seconds;
-				}
-				count->isEnter = false;
-			}
-			else
-			{
-				if(isParameterChanges)
-				{
-					seconds = (NUMBER_SECONDS < count->encoderPosition + 1)? 0: count->encoderPosition + 1;
-				}
-			}
+			parameterChange(count, SECONDS, &isParameterChanges, NUMBER_SECONDS, &seconds, false);
 			break;
 		case HOURFORMAT:
 			colorParameter[HOURFORMAT] = selectedText;
@@ -230,7 +124,6 @@ void DrawTimeSetting(encoderData_t *count,
 				}
 				count->isEnter = false;
 			}
-			count->isEnter = false;
 			break;
 		case SAVE:
 			colorParameter[SAVE] = selectedText;
@@ -255,14 +148,14 @@ void DrawTimeSetting(encoderData_t *count,
 			if(count->isEnter)
 			{
 				count->isEnter = false;
-				resizeMenuCounter(DOUBLING(4), 0);
+				resizeMenuCounter(DOUBLING(MENU_ZIZE), START_MENU);
+				count->encoderPosition = START_MENU;
+				TIM2->CNT = START_MENU;
 				exit = 0;
 			}
-
 			break;
 		default: break;
 		}
-
 
 		dispcolor_FillScreen(bgColor);
 
@@ -275,8 +168,6 @@ void DrawTimeSetting(encoderData_t *count,
 		dispcolor_printf(55, 85, FONTID_64F, colorParameter[HOURS], "%02d", hours);
 		dispcolor_printf(55+45, 85, FONTID_64F, colorParameter[MINUTES], "%02d", minutes);
 		dispcolor_printf(55+95, 85, FONTID_64F, colorParameter[SECONDS], "%02d", seconds);
-
-		//dispcolor_DrawRectangle(55-1, 85, 55+30, 85+60, selectedText);
 
 		dispcolor_printf(45, 160, FONTID_16F, digitColor, "HOUR FORMAT:");
 		dispcolor_printf(180, 160, FONTID_16F, colorParameter[HOURFORMAT], "%d", format);

@@ -5,7 +5,8 @@ RTC_HandleTypeDef hrtc;
 RTC_TimeTypeDef sTime = { 0 };
 RTC_DateTypeDef sDate = { 0 };
 
-void RTC_Init(void) {
+void RTC_Init(void)
+{
 	__HAL_RCC_RTC_ENABLE();
 
 	hrtc.Instance = RTC;
@@ -26,17 +27,19 @@ void RTC_Init(void) {
 
 	sDate.WeekDay = 3;
 	sDate.Month = 10;
-	sDate.Date = 21;
+	sDate.Date = 1;
 	sDate.Year = 20;
 	HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BCD);
 }
 
-void RTC_GetTime(RTC_TimeTypeDef *sTime) {
+void RTC_GetTime(RTC_TimeTypeDef *sTime, RTC_DateTypeDef *sDate)
+{
 	HAL_RTC_GetTime(&hrtc, sTime, RTC_FORMAT_BIN);
-	HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
+	HAL_RTC_GetDate(&hrtc, sDate, RTC_FORMAT_BCD);
 }
 
-void RTC_SetTime(RTC_TimeTypeDef *sTime, RTC_DateTypeDef *sDate) {
+void RTC_SetTime(RTC_TimeTypeDef *sTime, RTC_DateTypeDef *sDate)
+{
 	HAL_RTC_SetTime(&hrtc, sTime, RTC_FORMAT_BIN);
 	HAL_RTC_SetDate(&hrtc, sDate, RTC_FORMAT_BCD);
 }

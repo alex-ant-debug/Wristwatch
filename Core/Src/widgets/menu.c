@@ -39,7 +39,7 @@ void DrawMenu(encoderData_t *count)
 			if(count->isEnter)
 			{
 				count->isEnter = false;
-				RTC_GetTime(&timeNow);
+				RTC_GetTime(&timeNow, &todayDate);
 				DrawTimeSetting(count, &timeNow, &todayDate);
 			}
 			break;
