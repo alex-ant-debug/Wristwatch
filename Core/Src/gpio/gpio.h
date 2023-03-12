@@ -8,8 +8,8 @@
 #define gpio_PullDown   2
 
 
-void gpio_SetGPIOmode_In(GPIO_TypeDef* GPIOx, uint16_t Mask, uint8_t PullMode);
-void gpio_SetGPIOmode_Out(GPIO_TypeDef* GPIOx, uint16_t Mask);
-void gpio_PortClockStart(GPIO_TypeDef *GPIOx);
+void gpioSetGPIOmodeIn(GPIO_TypeDef* GPIOx, uint16_t Mask, uint8_t PullMode);
+void gpioSetGPIOmodeOut(GPIO_TypeDef* GPIOx, uint16_t Mask);
+void gpioPortClockStart(GPIO_TypeDef *GPIOx);
 
 #endif

@@ -82,12 +82,12 @@ void DrawStopwatch(encoderData_t *count, uint8_t secBubbles)
 		default: break;
 		}
 
-		dispcolor_FillScreen(bgColor);
+		dispcolorFillScreen(bgColor);
 
-		dispcolor_printf(45, 55, FONTID_64F, digitColor, "%07d.%03d", seconds, milliseconds);
-		dispcolor_printf((isStarted)? 105: 95, 130, FONTID_16F, firstColor, "%s", stateBtn);
-		dispcolor_printf(95, 150, FONTID_16F, secondColor, "%s", "RESET");
-		dispcolor_printf(105, 170, FONTID_16F, thirdColor, "%s", "EXIT");
+		dispcolorPrintf(45, 55, FONTID_64F, digitColor, "%07d.%03d", seconds, milliseconds);
+		dispcolorPrintf((isStarted)? 105: 95, 130, FONTID_16F, firstColor, "%s", stateBtn);
+		dispcolorPrintf(95, 150, FONTID_16F, secondColor, "%s", "RESET");
+		dispcolorPrintf(105, 170, FONTID_16F, thirdColor, "%s", "EXIT");
 
 		if (sixtySeconds == 60)
 		{
@@ -104,12 +104,12 @@ void DrawStopwatch(encoderData_t *count, uint8_t secBubbles)
 			int y = sin(angleRad) * 118 + yC;
 
 			if (angle == endAngle)
-				dispcolor_FillCircleWu(x, y, 4, secArcColor);
+				dispcolorFillCircleWu(x, y, 4, secArcColor);
 			else
-				dispcolor_FillCircleWu(x, y, 3, secArcColor);
+				dispcolorFillCircleWu(x, y, 3, secArcColor);
 		}
 
-		dispcolor_Update();
+		dispcolorUpdate();
 
 		HAL_Delay(50);
 	}

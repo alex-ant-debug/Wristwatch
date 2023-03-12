@@ -12,6 +12,7 @@
 
 #include "menu.h"
 #include "../widgets/stopwatch.h"
+#include "../widgets/timeSetting.h"
 #include "../widgets/ChangBackground.h"
 #include "../rtc/rtc.h"
 
@@ -39,6 +40,8 @@ void DrawMenu(encoderData_t *count)
 			if(count->isEnter)
 			{
 				count->isEnter = false;
+				RTC_TimeTypeDef timeNow = { 0 };
+				RTC_DateTypeDef todayDate = { 0 };
 				RTC_GetTime(&timeNow, &todayDate);
 				DrawTimeSetting(count, &timeNow, &todayDate);
 			}
@@ -63,14 +66,14 @@ void DrawMenu(encoderData_t *count)
 		default: break;
 		}
 
-		dispcolor_FillScreen(bgColor);
+		dispcolorFillScreen(bgColor);
 
-		dispcolor_printf(85, 80, FONTID_16F, firstColor, "%s", "Stopwatch");
-		dispcolor_printf(20, 110, FONTID_16F, secondColor, "%s", "Setting the time and date");
-		dispcolor_printf(60, 140, FONTID_16F, thirdColor, "%s", "Background color");
-		dispcolor_printf(105, 170, FONTID_16F, fourthColor, "%s", "Exit");
+		dispcolorPrintf(85, 80, FONTID_16F, firstColor, "%s", "Stopwatch");
+		dispcolorPrintf(20, 110, FONTID_16F, secondColor, "%s", "Setting the time and date");
+		dispcolorPrintf(60, 140, FONTID_16F, thirdColor, "%s", "Background color");
+		dispcolorPrintf(105, 170, FONTID_16F, fourthColor, "%s", "Exit");
 
-		dispcolor_Update();
+		dispcolorUpdate();
 
 		HAL_Delay(50);
 	}

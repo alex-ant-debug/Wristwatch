@@ -6,9 +6,9 @@
  */
 #include <stm32f4xx_hal.h>
 #include <string.h>
-#include <dispcolor.h>
-#include <font.h>
 
+#include "dispcolor.h"
+#include "font.h"
 #include "../widgets/ChangBackground.h"
 
 
@@ -18,11 +18,12 @@ void DrawChangBackground(encoderData_t *count)
 
 	while(exit)
 	{
-		uint16_t firstColor, secondColor, thirdColor, fourthColor;
+		uint16_t colorText[BACKGROUND_SIZE] = {digitColor, digitColor, digitColor, digitColor};
 
 		selectedText = GREEN;
 
-		switch (bgColor) {
+		switch (bgColor)
+		{
 		case BLACK:
 			digitColor = WHITE;
 			break;
@@ -35,11 +36,10 @@ void DrawChangBackground(encoderData_t *count)
 		default: break;
 		}
 
-		firstColor = secondColor = thirdColor = fourthColor = digitColor;
-
-		switch (count->encoderPosition) {
+		switch (count->encoderPosition)
+		{
 		case COLOR_WHITE:
-			firstColor = selectedText;
+			colorText[COLOR_WHITE] = selectedText;
 			if(count->isEnter)
 			{
 				count->isEnter = false;
@@ -47,7 +47,7 @@ void DrawChangBackground(encoderData_t *count)
 			}
 			break;
 		case COLOR_BLACK:
-			secondColor = selectedText;
+			colorText[COLOR_BLACK] = selectedText;
 			if(count->isEnter)
 			{
 				count->isEnter = false;
@@ -55,7 +55,7 @@ void DrawChangBackground(encoderData_t *count)
 			}
 			break;
 		case COLOR_BLUE:
-			thirdColor = selectedText;
+			colorText[COLOR_BLUE] = selectedText;
 			if(count->isEnter)
 			{
 				count->isEnter = false;
@@ -63,7 +63,7 @@ void DrawChangBackground(encoderData_t *count)
 			}
 			break;
 		case COLOR_EXIT:
-			fourthColor = selectedText;
+			colorText[COLOR_EXIT] = selectedText;
 			if(count->isEnter)
 			{
 				count->isEnter = false;
@@ -74,14 +74,14 @@ void DrawChangBackground(encoderData_t *count)
 		default: break;
 		}
 
-		dispcolor_FillScreen(bgColor);
+		dispcolorFillScreen(bgColor);
 
-		dispcolor_printf(95, 80, FONTID_16F, firstColor, "%s", "WHITE");
-		dispcolor_printf(95, 110, FONTID_16F, secondColor, "%s", "BLACK");
-		dispcolor_printf(100, 140, FONTID_16F, thirdColor, "%s", "BLUE");
-		dispcolor_printf(105, 170, FONTID_16F, fourthColor, "%s", "EXIT");
+		dispcolorPrintf(95, 80, FONTID_16F, colorText[COLOR_WHITE], "%s", "WHITE");
+		dispcolorPrintf(95, 110, FONTID_16F, colorText[COLOR_BLACK], "%s", "BLACK");
+		dispcolorPrintf(100, 140, FONTID_16F, colorText[COLOR_BLUE], "%s", "BLUE");
+		dispcolorPrintf(105, 170, FONTID_16F, colorText[COLOR_EXIT], "%s", "EXIT");
 
-		dispcolor_Update();
+		dispcolorUpdate();
 
 		HAL_Delay(50);
 	}

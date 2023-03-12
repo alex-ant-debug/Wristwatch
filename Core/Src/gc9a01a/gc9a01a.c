@@ -362,21 +362,21 @@ static void GPIO_init(void) {
 	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
 
 #if (GC9A01A_RESET_Used)
-	gpio_PortClockStart(GC9A01A_RESET_Port);
+	gpioPortClockStart(GC9A01A_RESET_Port);
 	GPIO_InitStruct.Pin = GC9A01A_RESET_Pin;
 	HAL_GPIO_Init(GC9A01A_RESET_Port, &GPIO_InitStruct);
 	RESET_HIGH();
 #endif
 
 #if (GC9A01A_CS_Used)
-  gpio_PortClockStart(GC9A01A_CS_Port);
+  gpioPortClockStart(GC9A01A_CS_Port);
   GPIO_InitStruct.Pin = GC9A01A_CS_Pin;
   HAL_GPIO_Init(GC9A01A_CS_Port, &GPIO_InitStruct);
   CS_HIGH();
 #endif
 
 #if (GC9A01A_DC_Used)
-	gpio_PortClockStart(GC9A01A_DC_Port);
+	gpioPortClockStart(GC9A01A_DC_Port);
 	GPIO_InitStruct.Pin = GC9A01A_DC_Pin;
 	HAL_GPIO_Init(GC9A01A_DC_Port, &GPIO_InitStruct);
 	DC_HIGH();

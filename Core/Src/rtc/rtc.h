@@ -3,8 +3,7 @@
 
 #include <stm32f4xx_hal_rtc.h>
 
-RTC_TimeTypeDef timeNow;
-RTC_DateTypeDef todayDate;
+
 
 void RTC_Init(void);
 void RTC_GetTime(RTC_TimeTypeDef *sTime, RTC_DateTypeDef *sDate);

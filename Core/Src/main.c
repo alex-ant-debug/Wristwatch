@@ -1,16 +1,9 @@
 #include <stdlib.h>
-#include <dispcolor.h>
-#include <stdbool.h>
-#include <gpio.h>
-#include <rtc.h>
-#include <tmr2.h>
-#include <tmr3.h>
+#include "dispcolor.h"
+#include "timers.h"
 #include "main.h"
 #include "widgets/clock.h"
-#include "widgets/stopwatch.h"
 #include "widgets/menu.h"
-#include "widgets/ChangBackground.h"
-
 
 
 
@@ -18,8 +11,8 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 
 
-encoderData_t encoder;
-uint8_t Enc_Counter = 0;
+static encoderData_t encoder;
+static uint8_t encoderCounter = 0;
 bool isEncSecondOperation = false;
 
 
@@ -32,7 +25,7 @@ int main(void) {
 	TIM3_Init();
 	MX_GPIO_Init();
 
-	dispcolor_Init(240, 240);
+	dispcolorInit(240, 240);
 
 	while (1)
 	{
@@ -43,8 +36,7 @@ int main(void) {
 		}
 		else
 		{
-			RTC_GetTime(&timeNow, &todayDate);
-			DrawClock(&timeNow, &todayDate, 0);
+			DrawClock();
 		}
 	}
 }
@@ -120,9 +112,9 @@ void HAL_TIM_TriggerCallback(TIM_HandleTypeDef *htim)
 	{
 		if(isEncSecondOperation)
 		{
-			Enc_Counter = TIM2->CNT;
+			encoderCounter = TIM2->CNT;
 
-			encoder.encoderPosition = (Enc_Counter != 0)? Enc_Counter/2: Enc_Counter;
+			encoder.encoderPosition = (encoderCounter != 0)? encoderCounter/2: encoderCounter;
 
 			isEncSecondOperation = false;
 		}

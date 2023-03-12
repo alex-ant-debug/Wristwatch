@@ -22,27 +22,27 @@ static void SwapInt16Values(int16_t *pValue1, int16_t *pValue2) {
 	*pValue2 = TempValue;
 }
 
-void dispcolor_Init(uint8_t Width, uint8_t Height) {
+void dispcolorInit(uint8_t Width, uint8_t Height) {
 #if (DISPCOLOR_type == DISPTYPE_gc9a01a)
 	GC9A01A_Init(Width, Height);
 	_Width = GC9A01A_GetWidth();
 	_Height = GC9A01A_GetHeight();
 #endif
 
-	dispcolor_ClearScreen();
+	dispcolorClearScreen();
 
 	bgColor = BLACK;
 	digitColor = WHITE;
 	selectedText = GREEN;
 }
 
-void dispcolor_Update() {
+void dispcolorUpdate() {
 #if (DISPCOLOR_type == DISPTYPE_gc9a01a)
 	GC9A01A_Update();
 #endif
 }
 
-void dispcolor_SetBrightness(uint8_t Value) {
+void dispcolorSetBrightness(uint8_t Value) {
 	if (Value > 100)
 		Value = 100;
 
@@ -51,34 +51,34 @@ void dispcolor_SetBrightness(uint8_t Value) {
 #endif
 }
 
-void dispcolor_DrawPixel(int16_t x, int16_t y, uint16_t color) {
+void dispcolorDrawPixel(int16_t x, int16_t y, uint16_t color) {
 #if (DISPCOLOR_type == DISPTYPE_gc9a01a)
 	GC9A01A_DrawPixel(x, y, color);
 #endif
 }
 
-uint16_t dispcolor_GetPixel(int16_t x, int16_t y) {
+uint16_t dispcolorGetPixel(int16_t x, int16_t y) {
 #if (DISPCOLOR_type == DISPTYPE_gc9a01a)
 	return GC9A01A_GetPixel(x, y);
 #endif
 }
 
-void dispcolor_FillRect(int16_t x, int16_t y, int16_t w, int16_t h,
+void dispcolorFillRect(int16_t x, int16_t y, int16_t w, int16_t h,
 		uint16_t color) {
 #if (DISPCOLOR_type == DISPTYPE_gc9a01a)
 	GC9A01A_FillRect(x, y, w, h, color);
 #endif
 }
 
-void dispcolor_FillScreen(uint16_t color) {
-	dispcolor_FillRect(0, 0, _Width, _Height, color);
+void dispcolorFillScreen(uint16_t color) {
+	dispcolorFillRect(0, 0, _Width, _Height, color);
 }
 
-void dispcolor_ClearScreen(void) {
-	dispcolor_FillScreen(BLACK);
+void dispcolorClearScreen(void) {
+	dispcolorFillScreen(BLACK);
 }
 
-static void DrawLine_Slow(int16_t x1, int16_t y1, int16_t x2, int16_t y2,
+static void DrawLineSlow(int16_t x1, int16_t y1, int16_t x2, int16_t y2,
 		uint16_t color) {
 	const int16_t deltaX = abs(x2 - x1);
 	const int16_t deltaY = abs(y2 - y1);
@@ -87,10 +87,10 @@ static void DrawLine_Slow(int16_t x1, int16_t y1, int16_t x2, int16_t y2,
 
 	int16_t error = deltaX - deltaY;
 
-	dispcolor_DrawPixel(x2, y2, color);
+	dispcolorDrawPixel(x2, y2, color);
 
 	while (x1 != x2 || y1 != y2) {
-		dispcolor_DrawPixel(x1, y1, color);
+		dispcolorDrawPixel(x1, y1, color);
 		const int16_t error2 = error * 2;
 
 		if (error2 > -deltaY) {
@@ -104,28 +104,28 @@ static void DrawLine_Slow(int16_t x1, int16_t y1, int16_t x2, int16_t y2,
 	}
 }
 
-void dispcolor_DrawLine(int16_t x1, int16_t y1, int16_t x2, int16_t y2,
+void dispcolorDrawLine(int16_t x1, int16_t y1, int16_t x2, int16_t y2,
 		uint16_t color) {
 	if (x1 == x2) {
 		if (y1 > y2)
-			dispcolor_FillRect(x1, y2, 1, y1 - y2 + 1, color);
+			dispcolorFillRect(x1, y2, 1, y1 - y2 + 1, color);
 		else
-			dispcolor_FillRect(x1, y1, 1, y2 - y1 + 1, color);
+			dispcolorFillRect(x1, y1, 1, y2 - y1 + 1, color);
 		return;
 	}
 
 	if (y1 == y2) {
 		if (x1 > x2)
-			dispcolor_FillRect(x2, y1, x1 - x2 + 1, 1, color);
+			dispcolorFillRect(x2, y1, x1 - x2 + 1, 1, color);
 		else
-			dispcolor_FillRect(x1, y1, x2 - x1 + 1, 1, color);
+			dispcolorFillRect(x1, y1, x2 - x1 + 1, 1, color);
 		return;
 	}
 
-	DrawLine_Slow(x1, y1, x2, y2, color);
+	DrawLineSlow(x1, y1, x2, y2, color);
 }
 
-void dispcolor_DrawLine2(int16_t x1, int16_t y1, int16_t x2, int16_t y2,
+void dispcolorDrawLine2(int16_t x1, int16_t y1, int16_t x2, int16_t y2,
 		uint16_t color, uint8_t thick) {
 	const int16_t deltaX = abs(x2 - x1);
 	const int16_t deltaY = abs(y2 - y1);
@@ -135,15 +135,15 @@ void dispcolor_DrawLine2(int16_t x1, int16_t y1, int16_t x2, int16_t y2,
 	int16_t error = deltaX - deltaY;
 
 	if (thick > 1)
-		dispcolor_FillCircle(x2, y2, thick >> 1, color);
+		dispcolorFillCircle(x2, y2, thick >> 1, color);
 	else
-		dispcolor_DrawPixel(x2, y2, color);
+		dispcolorDrawPixel(x2, y2, color);
 
 	while (x1 != x2 || y1 != y2) {
 		if (thick > 1)
-			dispcolor_FillCircle(x1, y1, thick >> 1, color);
+			dispcolorFillCircle(x1, y1, thick >> 1, color);
 		else
-			dispcolor_DrawPixel(x1, y1, color);
+			dispcolorDrawPixel(x1, y1, color);
 
 		const int16_t error2 = error * 2;
 		if (error2 > -deltaY) {
@@ -162,7 +162,7 @@ void DrawPixel(int16_t x, int16_t y, uint16_t color, float intensity) {
 	uRGB565 oldColorRgb;
 
 	colorRgb.word = color;
-	oldColorRgb.word = dispcolor_GetPixel(x, y);
+	oldColorRgb.word = dispcolorGetPixel(x, y);
 
 	float iintensity = 1 - intensity;
 	uint16_t r = oldColorRgb.rgb.r * iintensity + colorRgb.rgb.r * intensity;
@@ -173,7 +173,7 @@ void DrawPixel(int16_t x, int16_t y, uint16_t color, float intensity) {
 	newColorRgb.rgb.r = r;
 	newColorRgb.rgb.g = g;
 	newColorRgb.rgb.b = b;
-	dispcolor_DrawPixel(x, y, newColorRgb.word);
+	dispcolorDrawPixel(x, y, newColorRgb.word);
 }
 
 // integer part of x
@@ -196,7 +196,7 @@ void swap(int16_t *a, int16_t *b) {
 	*b = temp;
 }
 
-static void DrawLine_Slow_Wu(int16_t x1, int16_t y1, int16_t x2, int16_t y2,
+static void DrawLineSlow_Wu(int16_t x1, int16_t y1, int16_t x2, int16_t y2,
 		uint16_t color) {
 	uint8_t steep = abs(y2 - y1) > abs(x2 - x1) ? 1 : 0;
 	if (steep) {
@@ -259,60 +259,60 @@ static void DrawLine_Slow_Wu(int16_t x1, int16_t y1, int16_t x2, int16_t y2,
 	}
 }
 
-void dispcolor_DrawLine_Wu(int16_t x1, int16_t y1, int16_t x2, int16_t y2,
+void dispcolorDrawLine_Wu(int16_t x1, int16_t y1, int16_t x2, int16_t y2,
 		uint16_t color) {
 	if (x1 == x2) {
 		if (y1 > y2)
-			dispcolor_FillRect(x1, y2, 1, y1 - y2 + 1, color);
+			dispcolorFillRect(x1, y2, 1, y1 - y2 + 1, color);
 		else
-			dispcolor_FillRect(x1, y1, 1, y2 - y1 + 1, color);
+			dispcolorFillRect(x1, y1, 1, y2 - y1 + 1, color);
 		return;
 	}
 
 	if (y1 == y2) {
 		if (x1 > x2)
-			dispcolor_FillRect(x2, y1, x1 - x2 + 1, 1, color);
+			dispcolorFillRect(x2, y1, x1 - x2 + 1, 1, color);
 		else
-			dispcolor_FillRect(x1, y1, x2 - x1 + 1, 1, color);
+			dispcolorFillRect(x1, y1, x2 - x1 + 1, 1, color);
 		return;
 	}
 
 	DrawLine_Slow_Wu(x1, y1, x2, y2, color);
 }
 
-void dispcolor_DrawRectangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2,
+void dispcolorDrawRectangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2,
 		uint16_t color) {
-	dispcolor_DrawLine(x1, y1, x1, y2, color);
-	dispcolor_DrawLine(x2, y1, x2, y2, color);
-	dispcolor_DrawLine(x1, y1, x2, y1, color);
-	dispcolor_DrawLine(x1, y2, x2, y2, color);
+	dispcolorDrawLine(x1, y1, x1, y2, color);
+	dispcolorDrawLine(x2, y1, x2, y2, color);
+	dispcolorDrawLine(x1, y1, x2, y1, color);
+	dispcolorDrawLine(x1, y2, x2, y2, color);
 }
 
-void dispcolor_FillRectangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2,
+void dispcolorFillRectangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2,
 		uint16_t fillcolor) {
 	if (x1 > x2)
 		SwapInt16Values(&x1, &x2);
 	if (y1 > y2)
 		SwapInt16Values(&y1, &y2);
 
-	dispcolor_FillRect(x1, y1, x2 - x1, y2 - y1, fillcolor);
+	dispcolorFillRect(x1, y1, x2 - x1, y2 - y1, fillcolor);
 }
 
-void dispcolor_DrawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
+void dispcolorDrawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
 		int16_t x2, int16_t y2, uint16_t color) {
-	dispcolor_DrawLine(x0, y0, x1, y1, color);
-	dispcolor_DrawLine(x1, y1, x2, y2, color);
-	dispcolor_DrawLine(x2, y2, x0, y0, color);
+	dispcolorDrawLine(x0, y0, x1, y1, color);
+	dispcolorDrawLine(x1, y1, x2, y2, color);
+	dispcolorDrawLine(x2, y2, x0, y0, color);
 }
 
-void dispcolor_DrawTriangle_Wu(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
+void dispcolorDrawTriangle_Wu(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
 		int16_t x2, int16_t y2, uint16_t color) {
-	dispcolor_DrawLine_Wu(x0, y0, x1, y1, color);
-	dispcolor_DrawLine_Wu(x1, y1, x2, y2, color);
-	dispcolor_DrawLine_Wu(x2, y2, x0, y0, color);
+	dispcolorDrawLine_Wu(x0, y0, x1, y1, color);
+	dispcolorDrawLine_Wu(x1, y1, x2, y2, color);
+	dispcolorDrawLine_Wu(x2, y2, x0, y0, color);
 }
 
-void dispcolor_FillTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
+void dispcolorFillTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
 		int16_t x2, int16_t y2, uint16_t color) {
 	int16_t a, b, y, last;
 
@@ -342,7 +342,7 @@ void dispcolor_FillTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
 		else if (x2 > b)
 			b = x2;
 
-		dispcolor_FillRect(a, y0, b - a + 1, 1, color);
+		dispcolorFillRect(a, y0, b - a + 1, 1, color);
 		return;
 	}
 
@@ -370,7 +370,7 @@ void dispcolor_FillTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
 		if (a > b)
 			SwapInt16Values(&a, &b);
 
-		dispcolor_FillRect(a, y, b - a + 1, 1, color);
+		dispcolorFillRect(a, y, b - a + 1, 1, color);
 	}
 
 	// For lower part of triangle, find scanline crossings for segments 0-2 and 1-2.  This loop is skipped if y1=y2.
@@ -385,11 +385,11 @@ void dispcolor_FillTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
 		if (a > b)
 			SwapInt16Values(&a, &b);
 
-		dispcolor_FillRect(a, y, b - a + 1, 1, color);
+		dispcolorFillRect(a, y, b - a + 1, 1, color);
 	}
 }
 
-void dispcolor_DrawCircle(int16_t x0, int16_t y0, int16_t radius,
+void dispcolorDrawCircle(int16_t x0, int16_t y0, int16_t radius,
 		uint16_t color, uint8_t correction) {
 	int x = 0;
 	int y = radius;
@@ -400,10 +400,10 @@ void dispcolor_DrawCircle(int16_t x0, int16_t y0, int16_t radius,
 		correction = 1;
 
 	while (y >= 0) {
-		dispcolor_DrawPixel(x0 + x, y0 + y + correction, color);
-		dispcolor_DrawPixel(x0 + x, y0 - y, color);
-		dispcolor_DrawPixel(x0 - x + correction, y0 + y + correction, color);
-		dispcolor_DrawPixel(x0 - x + correction, y0 - y, color);
+		dispcolorDrawPixel(x0 + x, y0 + y + correction, color);
+		dispcolorDrawPixel(x0 + x, y0 - y, color);
+		dispcolorDrawPixel(x0 - x + correction, y0 + y + correction, color);
+		dispcolorDrawPixel(x0 - x + correction, y0 - y, color);
 		error = 2 * (delta + y) - 1;
 
 		if (delta < 0 && error <= 0) {
@@ -426,7 +426,7 @@ void dispcolor_DrawCircle(int16_t x0, int16_t y0, int16_t radius,
 	}
 }
 
-void dispcolor_DrawCircle_Wu(int16_t x0, int16_t y0, int16_t radius,
+void dispcolorDrawCircle_Wu(int16_t x0, int16_t y0, int16_t radius,
 		uint16_t color) {
 	int16_t i = 0;
 	int16_t j = radius;
@@ -470,7 +470,7 @@ void dispcolor_DrawCircle_Wu(int16_t x0, int16_t y0, int16_t radius,
 	}
 }
 
-void dispcolor_FillCircle(int16_t x0, int16_t y0, int16_t radius,
+void dispcolorFillCircle(int16_t x0, int16_t y0, int16_t radius,
 		uint16_t color) {
 	int x = 0;
 	int y = radius;
@@ -478,8 +478,8 @@ void dispcolor_FillCircle(int16_t x0, int16_t y0, int16_t radius,
 	int error = 0;
 
 	while (y >= 0) {
-		dispcolor_DrawLine(x0 + x, y0 - y, x0 + x, y0 + y, color);
-		dispcolor_DrawLine(x0 - x, y0 - y, x0 - x, y0 + y, color);
+		dispcolorDrawLine(x0 + x, y0 - y, x0 + x, y0 + y, color);
+		dispcolorDrawLine(x0 - x, y0 - y, x0 - x, y0 + y, color);
 		error = 2 * (delta + y) - 1;
 
 		if (delta < 0 && error <= 0) {
@@ -502,14 +502,14 @@ void dispcolor_FillCircle(int16_t x0, int16_t y0, int16_t radius,
 	}
 }
 
-void dispcolor_FillCircleWu(int16_t x0, int16_t y0, int16_t radius,
+void dispcolorFillCircleWu(int16_t x0, int16_t y0, int16_t radius,
 		uint16_t color) {
 	if (radius > 1)
-		dispcolor_FillCircle(x0, y0, radius - 1, color);
-	dispcolor_DrawCircle_Wu(x0, y0, radius, color);
+		dispcolorFillCircle(x0, y0, radius - 1, color);
+	dispcolorDrawCircle_Wu(x0, y0, radius, color);
 }
 
-void dispcolor_DrawArc(int16_t x0, int16_t y0, int16_t radius,
+void dispcolorDrawArc(int16_t x0, int16_t y0, int16_t radius,
 		int16_t startAngle, int16_t endAngle, uint16_t color, uint8_t thick) {
 	int16_t xLast = -1, yLast = -1;
 	startAngle -= 90;
@@ -527,16 +527,16 @@ void dispcolor_DrawArc(int16_t x0, int16_t y0, int16_t radius,
 		}
 
 		if (thick > 1)
-			dispcolor_DrawLine2(xLast, yLast, x, y, color, thick);
+			dispcolorDrawLine2(xLast, yLast, x, y, color, thick);
 		else
-			dispcolor_DrawLine(xLast, yLast, x, y, color);
+			dispcolorDrawLine(xLast, yLast, x, y, color);
 
 		xLast = x;
 		yLast = y;
 	}
 }
 
-void dispcolor_DrawArc_Wu(int16_t x0, int16_t y0, int16_t radius,
+void dispcolorDrawArc_Wu(int16_t x0, int16_t y0, int16_t radius,
 		int16_t startAngle, int16_t endAngle, uint16_t color, uint8_t thick) {
 	int16_t xLast = -1, yLast = -1;
 	startAngle -= 90;
@@ -555,16 +555,16 @@ void dispcolor_DrawArc_Wu(int16_t x0, int16_t y0, int16_t radius,
 		}
 
 		if (thick > 1)
-			dispcolor_DrawCircle_Wu(x, y, thick / 2, color);
+			dispcolorDrawCircle_Wu(x, y, thick / 2, color);
 		else
-			dispcolor_DrawLine_Wu(xLast, yLast, x, y, color);
+			dispcolorDrawLine_Wu(xLast, yLast, x, y, color);
 
 		xLast = x;
 		yLast = y;
 	}
 }
 
-static uint8_t dispcolor_DrawChar_General(int16_t X, int16_t Y, uint8_t FontID,
+static uint8_t dispcolorDrawChar_General(int16_t X, int16_t Y, uint8_t FontID,
 		char Char, uint16_t TextColor, uint16_t BgColor,
 		uint8_t TransparentBg) {
 
@@ -577,9 +577,9 @@ static uint8_t dispcolor_DrawChar_General(int16_t X, int16_t Y, uint8_t FontID,
 		for (uint8_t row = 0; row < CharHeight; row++) {
 			for (uint8_t col = 0; col < CharWidth; col++) {
 				if (pCharTable[row] & (1 << (7 - col)))
-					dispcolor_DrawPixel(X + col, Y + row, TextColor);
+					dispcolorDrawPixel(X + col, Y + row, TextColor);
 				else if (!TransparentBg)
-					dispcolor_DrawPixel(X + col, Y + row, BgColor);
+					dispcolorDrawPixel(X + col, Y + row, BgColor);
 			}
 		}
 	} else {
@@ -587,14 +587,14 @@ static uint8_t dispcolor_DrawChar_General(int16_t X, int16_t Y, uint8_t FontID,
 			for (uint8_t col = 0; col < CharWidth; col++) {
 				if (col < 8) {
 					if (pCharTable[row * 2] & (1 << (7 - col)))
-						dispcolor_DrawPixel(X + col, Y + row, TextColor);
+						dispcolorDrawPixel(X + col, Y + row, TextColor);
 					else if (!TransparentBg)
-						dispcolor_DrawPixel(X + col, Y + row, BgColor);
+						dispcolorDrawPixel(X + col, Y + row, BgColor);
 				} else {
 					if (pCharTable[(row * 2) + 1] & (1 << (15 - col)))
-						dispcolor_DrawPixel(X + col, Y + row, TextColor);
+						dispcolorDrawPixel(X + col, Y + row, TextColor);
 					else if (!TransparentBg)
-						dispcolor_DrawPixel(X + col, Y + row, BgColor);
+						dispcolorDrawPixel(X + col, Y + row, BgColor);
 				}
 			}
 		}
@@ -603,17 +603,17 @@ static uint8_t dispcolor_DrawChar_General(int16_t X, int16_t Y, uint8_t FontID,
 	return CharWidth;
 }
 
-uint8_t dispcolor_DrawChar(int16_t X, int16_t Y, uint8_t FontID, char Char,
+uint8_t dispcolorDrawChar(int16_t X, int16_t Y, uint8_t FontID, char Char,
 		uint16_t TextColor) {
-	return dispcolor_DrawChar_General(X, Y, FontID, Char, TextColor, 0, 1);
+	return dispcolorDrawChar_General(X, Y, FontID, Char, TextColor, 0, 1);
 }
 
-uint8_t dispcolor_DrawChar_Bg(int16_t X, int16_t Y, uint8_t FontID,
+uint8_t dispcolorDrawChar_Bg(int16_t X, int16_t Y, uint8_t FontID,
 		char Char, uint16_t TextColor, uint16_t BgColor) {
-	return dispcolor_DrawChar_General(X, Y, FontID, Char, TextColor, BgColor, 0);
+	return dispcolorDrawChar_General(X, Y, FontID, Char, TextColor, BgColor, 0);
 }
 
-static int16_t dispcolor_DrawString_General(int16_t X, int16_t Y,
+static int16_t dispcolorDrawString_General(int16_t X, int16_t Y,
 		uint8_t FontID, char *Str, uint16_t TextColor, uint16_t BgColor,
 		uint8_t TransparentBg) {
 	uint8_t done = 0;
@@ -633,9 +633,9 @@ static int16_t dispcolor_DrawString_General(int16_t X, int16_t Y,
 			break;
 		default:
 			if (TransparentBg)
-				X += dispcolor_DrawChar(X, Y, FontID, *Str, TextColor);
+				X += dispcolorDrawChar(X, Y, FontID, *Str, TextColor);
 			else
-				X += dispcolor_DrawChar_Bg(X, Y, FontID, *Str, TextColor,
+				X += dispcolorDrawChar_Bg(X, Y, FontID, *Str, TextColor,
 						BgColor);
 
 			StrHeight = font_GetCharHeight(font_GetFontStruct(FontID, *Str));
@@ -646,18 +646,18 @@ static int16_t dispcolor_DrawString_General(int16_t X, int16_t Y,
 	return X;
 }
 
-int16_t dispcolor_DrawString(int16_t X, int16_t Y, uint8_t FontID, char *Str,
+int16_t dispcolorDrawString(int16_t X, int16_t Y, uint8_t FontID, char *Str,
 		uint16_t TextColor) {
-	return dispcolor_DrawString_General(X, Y, FontID, Str, TextColor, 0, 1);
+	return dispcolorDrawString_General(X, Y, FontID, Str, TextColor, 0, 1);
 }
 
-int16_t dispcolor_DrawString_Bg(int16_t X, int16_t Y, uint8_t FontID, char *Str,
+int16_t dispcolorDrawString_Bg(int16_t X, int16_t Y, uint8_t FontID, char *Str,
 		uint16_t TextColor, uint16_t BgColor) {
-	return dispcolor_DrawString_General(X, Y, FontID, Str, TextColor, BgColor,
+	return dispcolorDrawString_General(X, Y, FontID, Str, TextColor, BgColor,
 			0);
 }
 
-int16_t dispcolor_printf(int16_t X, int16_t Y, uint8_t FontID,
+int16_t dispcolorPrintf(int16_t X, int16_t Y, uint8_t FontID,
 		uint16_t TextColor, const char *args, ...) {
 	char StrBuff[100];
 
@@ -666,10 +666,10 @@ int16_t dispcolor_printf(int16_t X, int16_t Y, uint8_t FontID,
 	vsnprintf(StrBuff, sizeof(StrBuff), args, ap);
 	va_end(ap);
 
-	return dispcolor_DrawString(X, Y, FontID, StrBuff, TextColor);
+	return dispcolorDrawString(X, Y, FontID, StrBuff, TextColor);
 }
 
-int16_t dispcolor_printf_Bg(int16_t X, int16_t Y, uint8_t FontID,
+int16_t dispcolorPrintfBg(int16_t X, int16_t Y, uint8_t FontID,
 		uint16_t TextColor, uint16_t BgColor, const char *args, ...) {
 	char StrBuff[100];
 
@@ -678,11 +678,11 @@ int16_t dispcolor_printf_Bg(int16_t X, int16_t Y, uint8_t FontID,
 	vsnprintf(StrBuff, sizeof(StrBuff), args, ap);
 	va_end(ap);
 
-	return dispcolor_DrawString_Bg(X, Y, FontID, StrBuff, TextColor,
+	return dispcolorDrawString_Bg(X, Y, FontID, StrBuff, TextColor,
 			BgColor);
 }
 
-int16_t dispcolor_GetTextWidth(uint8_t FontID, char *Str) {
+int16_t dispcolorGetTextWidth(uint8_t FontID, char *Str) {
 	uint8_t done = 0;
 	int16_t width = 0;
 
@@ -703,7 +703,7 @@ int16_t dispcolor_GetTextWidth(uint8_t FontID, char *Str) {
 	return width;
 }
 
-int16_t dispcolor_GetFormatedTextWidth(uint8_t FontID, char *Str,
+int16_t dispcolorGetFormatedTextWidth(uint8_t FontID, char *Str,
 		const char *args, ...) {
 	char StrBuff[100];
 
@@ -712,5 +712,5 @@ int16_t dispcolor_GetFormatedTextWidth(uint8_t FontID, char *Str,
 	vsnprintf(StrBuff, sizeof(StrBuff), args, ap);
 	va_end(ap);
 
-	return dispcolor_GetTextWidth(FontID, Str);
+	return dispcolorGetTextWidth(FontID, Str);
 }

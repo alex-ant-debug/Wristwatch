@@ -6,10 +6,11 @@
  */
 #include <stm32f4xx_hal.h>
 #include <string.h>
-#include <dispcolor.h>
-#include <font.h>
+#include <stdbool.h>
 #include <math.h>
 
+#include "dispcolor.h"
+#include "font.h"
 #include "timeSetting.h"
 #include "../timers/tmr2.h"
 #include "../rtc/rtc.h"
@@ -130,6 +131,8 @@ void DrawTimeSetting(encoderData_t *count,
 			if(count->isEnter)
 			{
 				count->isEnter = false;
+				RTC_TimeTypeDef timeNow = { 0 };
+				RTC_DateTypeDef todayDate = { 0 };
 
 				todayDate.Date = day;
 				todayDate.Month = month;
@@ -157,26 +160,26 @@ void DrawTimeSetting(encoderData_t *count,
 		default: break;
 		}
 
-		dispcolor_FillScreen(bgColor);
+		dispcolorFillScreen(bgColor);
 
-		dispcolor_printf(65, 45, FONTID_24F, digitColor, "   .   .");
-		dispcolor_printf(65, 45, FONTID_24F, colorParameter[DAYS], "%02d", day);
-		dispcolor_printf(65+35, 45, FONTID_24F, colorParameter[MONTHS], "%02d", month);
-		dispcolor_printf(65+70, 45, FONTID_24F, colorParameter[YEARS], "20%02d", year);
+		dispcolorPrintf(65, 45, FONTID_24F, digitColor, "   .   .");
+		dispcolorPrintf(65, 45, FONTID_24F, colorParameter[DAYS], "%02d", day);
+		dispcolorPrintf(65+35, 45, FONTID_24F, colorParameter[MONTHS], "%02d", month);
+		dispcolorPrintf(65+70, 45, FONTID_24F, colorParameter[YEARS], "20%02d", year);
 
-		dispcolor_printf(55, 85, FONTID_64F, digitColor, "    :     :");
-		dispcolor_printf(55, 85, FONTID_64F, colorParameter[HOURS], "%02d", hours);
-		dispcolor_printf(55+45, 85, FONTID_64F, colorParameter[MINUTES], "%02d", minutes);
-		dispcolor_printf(55+95, 85, FONTID_64F, colorParameter[SECONDS], "%02d", seconds);
+		dispcolorPrintf(55, 85, FONTID_64F, digitColor, "    :     :");
+		dispcolorPrintf(55, 85, FONTID_64F, colorParameter[HOURS], "%02d", hours);
+		dispcolorPrintf(55+45, 85, FONTID_64F, colorParameter[MINUTES], "%02d", minutes);
+		dispcolorPrintf(55+95, 85, FONTID_64F, colorParameter[SECONDS], "%02d", seconds);
 
-		dispcolor_printf(45, 160, FONTID_16F, digitColor, "HOUR FORMAT:");
-		dispcolor_printf(180, 160, FONTID_16F, colorParameter[HOURFORMAT], "%d", format);
+		dispcolorPrintf(45, 160, FONTID_16F, digitColor, "HOUR FORMAT:");
+		dispcolorPrintf(180, 160, FONTID_16F, colorParameter[HOURFORMAT], "%d", format);
 
-		dispcolor_printf(100, 187, FONTID_16F, colorParameter[SAVE], "%s", "SAVE");
-		dispcolor_printf(105, 212, FONTID_16F, colorParameter[EXIT_SETUP], "%s", "EXIT");
+		dispcolorPrintf(100, 187, FONTID_16F, colorParameter[SAVE], "%s", "SAVE");
+		dispcolorPrintf(105, 212, FONTID_16F, colorParameter[EXIT_SETUP], "%s", "EXIT");
 
 
-		dispcolor_Update();
+		dispcolorUpdate();
 
 		HAL_Delay(50);
 	}

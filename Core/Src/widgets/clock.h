@@ -4,9 +4,7 @@
 #include "../rtc/rtc.h"
 
 
-void DrawClock(RTC_TimeTypeDef *time,
-		       RTC_DateTypeDef *date,
-			   uint8_t secBubbles);
+void DrawClock(void);
 
 
 #endif /* SRC_WIDGETS_CLOCK_H_ */
