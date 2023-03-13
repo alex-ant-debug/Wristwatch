@@ -40,7 +40,8 @@ void drawStopwatch(encoderData_t *count, uint8_t secBubbles)
         uint16_t colorText[STOPWATCH_MENU_SIZE] = {digitColor, digitColor, digitColor};
         uint16_t secArcColor = (bgColor == WHITE)? MAGENTA: GREEN;
 
-        switch (count->encoderPosition) {
+        switch (count->encoderPosition)
+        {
         case START_STOP:
             colorText[START_STOP] = selectedText;
             if((count->isEnter) && (!isStarted))
@@ -87,7 +88,7 @@ void drawStopwatch(encoderData_t *count, uint8_t secBubbles)
         dispcolorPrintf(95, 150, FONTID_16F, colorText[RESET_STOPWATCH], "%s", "RESET");
         dispcolorPrintf(105, 170, FONTID_16F, colorText[EXIT_STOPWATCH], "%s", "EXIT");
 
-        if (sixtySeconds == 60)
+        if(sixtySeconds == 60)
         {
             sixtySeconds = 0;
         }
@@ -95,7 +96,7 @@ void drawStopwatch(encoderData_t *count, uint8_t secBubbles)
         int16_t startAngle = -90;
         int16_t endAngle = sixtySeconds * 6 - 90;
 
-        for (int16_t angle = startAngle; angle <= endAngle; angle += 6)
+        for(int16_t angle = startAngle; angle <= endAngle; angle += 6)
         {
             float angleRad = (float) angle * PI / 180;
             int x = cos(angleRad) * 118 + xC;

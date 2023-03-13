@@ -42,23 +42,23 @@ void gpioSetGPIOmodeOut(GPIO_TypeDef *GPIOx, uint16_t Mask)
 
 void gpioPortClockStart(GPIO_TypeDef *GPIOx)
 {
-    if (GPIOx == GPIOA)
+    if(GPIOx == GPIOA)
     {
         __HAL_RCC_GPIOA_CLK_ENABLE();
     }
-    else if (GPIOx == GPIOB)
+    else if(GPIOx == GPIOB)
     {
         __HAL_RCC_GPIOB_CLK_ENABLE();
     }
-    else if (GPIOx == GPIOC)
+    else if(GPIOx == GPIOC)
     {
         __HAL_RCC_GPIOC_CLK_ENABLE();
     }
-    else if (GPIOx == GPIOD)
+    else if(GPIOx == GPIOD)
     {
         __HAL_RCC_GPIOD_CLK_ENABLE();
     }
-    else if (GPIOx == GPIOE)
+    else if(GPIOx == GPIOE)
     {
         __HAL_RCC_GPIOE_CLK_ENABLE();
     }

@@ -27,7 +27,7 @@ void DrawClock(void)
     dispcolorPrintf(55, 85, FONTID_64F, digitColor, "%02d : %02d : %02d", time.Hours,
             time.Minutes, time.Seconds);
 
-    if (!time.Seconds)
+    if(!time.Seconds)
     {
         time.Seconds = 60;
     }

@@ -10,9 +10,9 @@ void (*spi_end)(void);
 
 void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *spihandle)
 {
-    if (&hspi == spihandle)
+    if(&hspi == spihandle)
     {
-        if (spi_end)
+        if(spi_end)
         {
             spi_end();
         }
@@ -38,7 +38,7 @@ void spimInit(SPI_TypeDef *SPIx, uint8_t fastSpeed)
     GPIO_InitStruct.Alternate = GPIO_AF5_SPI1;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-    if (SPIx == SPI1)
+    if(SPIx == SPI1)
     {
         __HAL_RCC_SPI1_CLK_ENABLE();
     }
@@ -90,7 +90,7 @@ void spimInit(SPI_TypeDef *SPIx, uint8_t fastSpeed)
 void SPI_send(SPI_TypeDef *SPIx, uint8_t word16bit, uint8_t *pBuff,
         uint16_t Len)
 {
-    if (SPIx == hspi.Instance)
+    if(SPIx == hspi.Instance)
     {
     	spiInit(word16bit);
         HAL_SPI_Transmit(&hspi, pBuff, Len, 100);
@@ -100,7 +100,7 @@ void SPI_send(SPI_TypeDef *SPIx, uint8_t word16bit, uint8_t *pBuff,
 void SPI_send_dma(SPI_TypeDef *SPIx, uint8_t word16bit, uint8_t *pBuff,
         uint16_t Len, void (*func)(void))
 {
-    if (SPIx == hspi.Instance)
+    if(SPIx == hspi.Instance)
     {
         spi_end = func;
         //spi_init(word16bit);
@@ -110,7 +110,7 @@ void SPI_send_dma(SPI_TypeDef *SPIx, uint8_t word16bit, uint8_t *pBuff,
 
 void SPI_recv(SPI_TypeDef *SPIx, uint8_t word16bit, uint8_t *pBuff, uint16_t Len)
 {
-    if (SPIx == hspi.Instance)
+    if(SPIx == hspi.Instance)
     {
     	spiInit(word16bit);
         HAL_SPI_Receive(&hspi, pBuff, Len, 100);
@@ -121,7 +121,7 @@ uint16_t SPI_sendrecv(SPI_TypeDef *SPIx, uint8_t word16bit, void *pData)
 {
     uint8_t result = 0;
 
-    if (SPIx == hspi.Instance)
+    if(SPIx == hspi.Instance)
     {
     	spiInit(word16bit);
         HAL_SPI_TransmitReceive(&hspi, pData, &result, 1, 100);
@@ -133,11 +133,11 @@ uint16_t SPI_sendrecv(SPI_TypeDef *SPIx, uint8_t word16bit, void *pData)
 void SPI_SendRecv_dma(SPI_TypeDef *SPIx, uint8_t word16bit, uint8_t *pTxBuff,
         uint8_t *pRxBuff, uint16_t Len, void (*func)(void))
 {
-    if (SPIx != hspi.Instance)
+    if(SPIx != hspi.Instance)
     {
         return;
     }
-    if (((!pTxBuff) && (!pRxBuff)) || (!Len))
+    if(((!pTxBuff) && (!pRxBuff)) || (!Len))
     {
         return;
     }

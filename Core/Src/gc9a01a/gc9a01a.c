@@ -127,7 +127,7 @@ void GC9A01A_HardReset(void)
 
 void GC9A01A_SleepMode(uint8_t mode)
 {
-    if (mode)
+    if(mode)
     {
         SendCmd(Cmd_SLPIN);
     }
@@ -140,7 +140,7 @@ void GC9A01A_SleepMode(uint8_t mode)
 
 void GC9A01A_InversionMode(uint8_t mode)
 {
-    if (mode)
+    if(mode)
     {
         SendCmd(Cmd_INVON);
     }
@@ -152,7 +152,7 @@ void GC9A01A_InversionMode(uint8_t mode)
 
 void GC9A01A_DisplayPower(uint8_t on)
 {
-    if (on)
+    if(on)
     {
         SendCmd(Cmd_DISPON);
     }
@@ -164,11 +164,11 @@ void GC9A01A_DisplayPower(uint8_t on)
 
 static void ColumnSet(uint16_t columnStart, uint16_t columnEnd)
 {
-    if (columnStart > columnEnd)
+    if(columnStart > columnEnd)
     {
         return;
     }
-    if (columnEnd > GC9A01A_Width)
+    if(columnEnd > GC9A01A_Width)
     {
         return;
     }
@@ -185,11 +185,11 @@ static void ColumnSet(uint16_t columnStart, uint16_t columnEnd)
 
 static void RowSet(uint16_t rowStart, uint16_t rowEnd)
 {
-    if (rowStart > rowEnd)
+    if(rowStart > rowEnd)
     {
         return;
     }
-    if (rowEnd > GC9A01A_Height)
+    if(rowEnd > GC9A01A_Height)
     {
         return;
     }
@@ -254,16 +254,16 @@ static void MemAccessModeSet(uint8_t rotation, uint8_t vertMirror,
         break;
     }
 
-    if (vertMirror)
+    if(vertMirror)
     {
         value = MADCTL_ML;
     }
-    if (horizMirror)
+    if(horizMirror)
     {
         value = MADCTL_MH;
     }
 
-    if (isBGR)
+    if(isBGR)
     {
         value |= MADCTL_BGR;
     }
@@ -272,7 +272,7 @@ static void MemAccessModeSet(uint8_t rotation, uint8_t vertMirror,
 
 void GC9A01A_SetBL(uint8_t value)
 {
-    if (value > 100)
+    if(value > 100)
     {
         value = 100;
     }
@@ -302,7 +302,7 @@ void GC9A01A_RamWrite(uint16_t *pBuff, uint16_t len)
 
 void GC9A01A_DrawPixel(int16_t x, int16_t y, uint16_t color)
 {
-  if ((x < 0) ||(x >= GC9A01A_Width) || (y < 0) || (y >= GC9A01A_Height))
+  if((x < 0) ||(x >= GC9A01A_Width) || (y < 0) || (y >= GC9A01A_Height))
   {
     return;
   }
@@ -312,15 +312,15 @@ void GC9A01A_DrawPixel(int16_t x, int16_t y, uint16_t color)
 
 void GC9A01A_FillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color)
 {
-  if ((x >= GC9A01A_Width) || (y >= GC9A01A_Height))
+  if((x >= GC9A01A_Width) || (y >= GC9A01A_Height))
   {
     return;
   }
-  if ((x + w) > GC9A01A_Width)
+  if((x + w) > GC9A01A_Width)
   {
     w = GC9A01A_Width - x;
   }
-  if ((y + h) > GC9A01A_Height)
+  if((y + h) > GC9A01A_Height)
   {
     h = GC9A01A_Height - y;
   }
@@ -336,7 +336,7 @@ void GC9A01A_FillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color
 
 void GC9A01A_DrawPixel(int16_t x, int16_t y, uint16_t color)
 {
-    if ((x < 0) || (x >= GC9A01A_Width) || (y < 0) || (y >= GC9A01A_Height))
+    if((x < 0) || (x >= GC9A01A_Width) || (y < 0) || (y >= GC9A01A_Height))
     {
         return;
     }
@@ -347,7 +347,7 @@ void GC9A01A_DrawPixel(int16_t x, int16_t y, uint16_t color)
 
 uint16_t GC9A01A_GetPixel(int16_t x, int16_t y)
 {
-    if ((x < 0) || (x >= GC9A01A_Width) || (y < 0) || (y >= GC9A01A_Height))
+    if((x < 0) || (x >= GC9A01A_Width) || (y < 0) || (y >= GC9A01A_Height))
     {
         return 0;
     }
@@ -359,30 +359,30 @@ uint16_t GC9A01A_GetPixel(int16_t x, int16_t y)
 void GC9A01A_FillRect(int16_t x, int16_t y, int16_t w, int16_t h,
         uint16_t color)
 {
-    if ((w <= 0) || (h <= 0) || (x >= GC9A01A_Width) || (y >= GC9A01A_Height))
+    if((w <= 0) || (h <= 0) || (x >= GC9A01A_Width) || (y >= GC9A01A_Height))
     {
         return;
     }
-    if (x < 0)
+    if(x < 0)
     {
         w += x;
         x = 0;
     }
-    if (y < 0)
+    if(y < 0)
     {
         h += y;
         y = 0;
     }
 
-    if ((w <= 0) || (h <= 0))
+    if((w <= 0) || (h <= 0))
     {
         return;
     }
-    if ((x + w) > GC9A01A_Width)
+    if((x + w) > GC9A01A_Width)
     {
         w = GC9A01A_Width - x;
     }
-    if ((y + h) > GC9A01A_Height)
+    if((y + h) > GC9A01A_Height)
     {
         h = GC9A01A_Height - y;
     }

@@ -86,7 +86,8 @@ void drawTimeSetting(encoderData_t *count)
             menuPosition = count->encoderPosition;
         }
 
-        switch (menuPosition) {
+        switch (menuPosition)
+        {
         case DAYS:
             colorParameter[DAYS] = selectedText;
             parameterChange(count, DAYS, &isParameterChanges, AMOUNT_DAYS, &day, true);
