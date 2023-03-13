@@ -24,6 +24,7 @@ void DrawMenu(encoderData_t *count)
     {
         uint16_t colorText[MENU_ZIZE] = {digitColor, digitColor, digitColor, digitColor};
 
+
         switch (count->encoderPosition) {
         case STOPWATCH:
             colorText[STOPWATCH] = selectedText;
