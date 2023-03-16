@@ -5,6 +5,7 @@
 #include "tmr11.h"
 #include "tmr2.h"
 #include "tmr3.h"
+#include "tmr5.h"
 
 typedef void (*tmr_handler)(void);
 

@@ -54,5 +54,18 @@ void TIM5_Init(void)
 
 void startTim5(void)
 {
+	//clear the flag so that the interrupt does not work immediately after initialization
+	__HAL_TIM_CLEAR_FLAG(&htim5, TIM_SR_UIF);
     HAL_TIM_Base_Start_IT(&htim5);
+}
+void stopTim5(void)
+{
+	HAL_TIM_Base_Stop_IT(&htim5);
+}
+
+void restartTim5(void)
+{
+	HAL_TIM_Base_Stop_IT(&htim5);
+	TIM5->CNT = 0;
+	HAL_TIM_Base_Start_IT(&htim5);
 }

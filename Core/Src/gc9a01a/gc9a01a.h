@@ -41,6 +41,7 @@ uint16_t GC9A01A_GetHeight();
 
 void GC9A01A_Init();
 void GC9A01A_Update();
+void GPIO_init(void);
 void GC9A01A_SleepMode(uint8_t Mode);
 void GC9A01A_DisplayPower(uint8_t On);
 void GC9A01A_SetBL(uint8_t Value);

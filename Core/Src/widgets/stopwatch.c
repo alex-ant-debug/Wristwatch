@@ -13,6 +13,7 @@
 #include "../widgets/constants.h"
 #include "../widgets/stopwatch.h"
 #include "../timers/timers.h"
+#include "../sleepMode/sleepMode.h"
 
 
 static bool isStarted = false;
@@ -126,4 +127,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
             milliseconds++;
         }
     }
+
+    if(htim->Instance == TIM5)
+	{
+		setStateSleepMode(true);
+	}
 }

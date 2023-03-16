@@ -4,10 +4,10 @@
 #include "main.h"
 #include "widgets/clock.h"
 #include "widgets/menu.h"
+#include "sleepMode/sleepMode.h"
+#include "systemClock/systemClock.h"
 
 
-
-void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 
 
@@ -23,9 +23,11 @@ int main(void) {
     RTC_Init();
     TIM2_Init(MENU_ZIZE*2);
     TIM3_Init();
+    TIM5_Init();
     MX_GPIO_Init();
 
     dispcolorInit(240, 240);
+    startTim5();
 
     while(1)
     {
@@ -38,6 +40,7 @@ int main(void) {
         {
             DrawClock();
         }
+        sleepMode();
     }
 }
 
@@ -62,48 +65,7 @@ static void MX_GPIO_Init(void)
   HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 }
 
-/**
- * @brief System Clock Configuration
- * @retval None
- */
-void SystemClock_Config(void) {
-    RCC_OscInitTypeDef RCC_OscInitStruct = { 0 };
-    RCC_ClkInitTypeDef RCC_ClkInitStruct = { 0 };
-    RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = { 0 };
 
-    // Configure the main internal regulator output voltage
-    __HAL_RCC_PWR_CLK_ENABLE();
-    __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
-
-    // Initializes the RCC Oscillators according to the specified parameters in the RCC_OscInitTypeDef structure.
-    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE | RCC_OSCILLATORTYPE_LSE;
-    RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-    RCC_OscInitStruct.LSEState = RCC_LSE_ON;
-    RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-    RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-    RCC_OscInitStruct.PLL.PLLM = 25;
-    RCC_OscInitStruct.PLL.PLLN = 200;
-    RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-    RCC_OscInitStruct.PLL.PLLQ = 4;
-    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
-        Error_Handler();
-    }
-    // Initializes the CPU, AHB and APB buses clocks
-    RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK    | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
-    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-    RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
-    RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
-
-    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_3) != HAL_OK) {
-        Error_Handler();
-    }
-    PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_RTC;
-    PeriphClkInitStruct.RTCClockSelection = RCC_RTCCLKSOURCE_LSE;
-    if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK) {
-        Error_Handler();
-    }
-}
 
 void HAL_TIM_TriggerCallback(TIM_HandleTypeDef *htim)
 {
@@ -115,26 +77,26 @@ void HAL_TIM_TriggerCallback(TIM_HandleTypeDef *htim)
 
             if(encoderCounter != 0)
             {
-            	uint32_t maxCountTIM2 = getTIM2AutoReload();
-            	// encoder count failure prevention
-            	if((encoderCounter == maxCountTIM2)&&(encoder.encoderPosition == 0))
-            	{
-            		setTIM2Counter(maxCountTIM2 - 2);
-            		encoderCounter = encoder.encoderPosition = (maxCountTIM2/2) - 1;
-            	}
-            	else if((encoderCounter == maxCountTIM2)&&(encoder.encoderPosition == (maxCountTIM2/2) - 1))
-				{
-					encoderCounter = encoder.encoderPosition = 0;
-					setTIM2Counter(0);
-				}
-            	else
-            	{
-            		encoder.encoderPosition = encoderCounter/2;
-            	}
+                uint32_t maxCountTIM2 = getTIM2AutoReload();
+                // encoder count failure prevention
+                if((encoderCounter == maxCountTIM2)&&(encoder.encoderPosition == 0))
+                {
+                    setTIM2Counter(maxCountTIM2 - 2);
+                    encoderCounter = encoder.encoderPosition = (maxCountTIM2/2) - 1;
+                }
+                else if((encoderCounter == maxCountTIM2)&&(encoder.encoderPosition == (maxCountTIM2/2) - 1))
+                {
+                    encoderCounter = encoder.encoderPosition = 0;
+                    setTIM2Counter(0);
+                }
+                else
+                {
+                    encoder.encoderPosition = encoderCounter/2;
+                }
             }
             else
             {
-            	encoder.encoderPosition = 0;
+                encoder.encoderPosition = 0;
             }
 
             isEncSecondOperation = false;
@@ -143,6 +105,8 @@ void HAL_TIM_TriggerCallback(TIM_HandleTypeDef *htim)
         {
             isEncSecondOperation = true;
         }
+        // sleep timer reset
+        restartTim5();
     }
 }
 
@@ -150,7 +114,20 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
    if(GPIO_Pin == GPIO_PIN_8)
    {
-       encoder.isEnter = true;
+       if(!getStateSleepMode())
+       {
+           encoder.isEnter = true;
+       }
+       else
+       {
+           // device woke up
+           setStateSleepMode(false);
+           MX_GPIO_Init();
+
+           awakening();
+       }
+       // sleep timer reset
+       restartTim5();
    }
 }
 

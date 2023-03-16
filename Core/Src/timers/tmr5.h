@@ -12,5 +12,7 @@
 
 void TIM5_Init(void);
 void startTim5(void);
+void stopTim5(void);
+void restartTim5(void);
 
 #endif /* SRC_TIMERS_TMR5_H_ */
