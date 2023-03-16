@@ -111,9 +111,31 @@ void HAL_TIM_TriggerCallback(TIM_HandleTypeDef *htim)
     {
         if(isEncSecondOperation)
         {
-            encoderCounter = TIM2->CNT;
+            encoderCounter = getTIM2Counter();
 
-            encoder.encoderPosition = (encoderCounter != 0)? encoderCounter/2: encoderCounter;
+            if(encoderCounter != 0)
+            {
+            	uint32_t maxCountTIM2 = getTIM2AutoReload();
+            	// encoder count failure prevention
+            	if((encoderCounter == maxCountTIM2)&&(encoder.encoderPosition == 0))
+            	{
+            		setTIM2Counter(maxCountTIM2 - 2);
+            		encoderCounter = encoder.encoderPosition = (maxCountTIM2/2) - 1;
+            	}
+            	else if((encoderCounter == maxCountTIM2)&&(encoder.encoderPosition == (maxCountTIM2/2) - 1))
+				{
+					encoderCounter = encoder.encoderPosition = 0;
+					setTIM2Counter(0);
+				}
+            	else
+            	{
+            		encoder.encoderPosition = encoderCounter/2;
+            	}
+            }
+            else
+            {
+            	encoder.encoderPosition = 0;
+            }
 
             isEncSecondOperation = false;
         }

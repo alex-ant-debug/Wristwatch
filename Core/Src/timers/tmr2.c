@@ -64,4 +64,17 @@ void resizeMenuCounter(uint32_t period, uint32_t startPosition)
     HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_ALL);
 }
 
+uint32_t getTIM2Counter(void)
+{
+	return TIM2->CNT;
+}
 
+void setTIM2Counter(uint32_t counter)
+{
+	TIM2->CNT = counter;
+}
+
+uint32_t getTIM2AutoReload(void)
+{
+	return TIM2->ARR;
+}
