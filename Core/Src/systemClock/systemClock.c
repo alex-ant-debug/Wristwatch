@@ -92,10 +92,10 @@ void SystemClock_Config_HSI(void)// HSI RC 16MHz --> 100kHz
 
 void stopHSE(void)
 {
-	RCC->CR &= ~(1<<RCC_CR_HSEON_Pos);
+    RCC->CR &= ~(1<<RCC_CR_HSEON_Pos);
 }
 
 void stopHSI(void)
 {
-	RCC->CR &= ~(1<<RCC_CR_HSION_Pos);
+    RCC->CR &= ~(1<<RCC_CR_HSION_Pos);
 }

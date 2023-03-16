@@ -36,6 +36,7 @@ static void parameterChange(encoderData_t *count,
         }
         else
         {
+        	*parameter = (*parameter > maxParameterValue)? 0: *parameter;
             *isParameterChanges = true;
             resizeMenuCounter(DOUBLING(maxParameterValue), (*parameter)*2);
             count->encoderPosition = *parameter;
@@ -102,7 +103,7 @@ void drawTimeSetting(encoderData_t *count)
             break;
         case HOURS:
             colorParameter[HOURS] = selectedText;
-            uint32_t formatHours = (hourFormat == RTC_HOURFORMAT_24)? NUMBER_HOURS_24: NUMBER_HOURS_12;
+            uint32_t formatHours = (hourFormat == RTC_HOURFORMAT_24)? NUMBER_HOURS_24: NUMBER_HOURS_12 + 1;
             parameterChange(count, HOURS, &isParameterChanges, formatHours, &hours, false);
             break;
         case MINUTES:
@@ -155,7 +156,6 @@ void drawTimeSetting(encoderData_t *count)
                 count->isEnter = false;
                 resizeMenuCounter(DOUBLING(MENU_ZIZE), START_MENU);
                 count->encoderPosition = START_MENU;
-                TIM2->CNT = START_MENU;
                 exit = 0;
             }
             break;

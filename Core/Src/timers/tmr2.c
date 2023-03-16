@@ -66,15 +66,15 @@ void resizeMenuCounter(uint32_t period, uint32_t startPosition)
 
 uint32_t getTIM2Counter(void)
 {
-	return TIM2->CNT;
+    return TIM2->CNT;
 }
 
 void setTIM2Counter(uint32_t counter)
 {
-	TIM2->CNT = counter;
+    TIM2->CNT = counter;
 }
 
 uint32_t getTIM2AutoReload(void)
 {
-	return TIM2->ARR;
+    return TIM2->ARR;
 }

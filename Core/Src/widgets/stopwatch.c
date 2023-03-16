@@ -24,7 +24,7 @@ static uint8_t sixtySeconds = 0;
 
 void drawStopwatch(encoderData_t *count, uint8_t secBubbles)
 {
-	uint8_t exit = 1;
+    uint8_t exit = 1;
     static char stateBtn[6] = {0};
     char start[] = "START";
     char stop[] = "STOP";
@@ -75,6 +75,8 @@ void drawStopwatch(encoderData_t *count, uint8_t secBubbles)
             if(count->isEnter)
             {
                 count->isEnter = false;
+                resizeMenuCounter(MENU_ZIZE*2, START_MENU);
+                count->encoderPosition = START_MENU;
                 exit = 0;
             }
 
@@ -129,7 +131,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
     }
 
     if(htim->Instance == TIM5)
-	{
-		setStateSleepMode(true);
-	}
+    {
+        setStateSleepMode(true);
+    }
 }
