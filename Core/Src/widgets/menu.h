@@ -15,6 +15,7 @@ enum menuStructure
     STOPWATCH,
     TIME_SETTING,
     CHANG_BACKGROUND,
+	BRIGHTNESS_CHANGE,
     EXIT
 };
 

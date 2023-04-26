@@ -30,9 +30,8 @@ static void parameterChange(encoderData_t *count,
         if(*isParameterChanges)
         {
             *isParameterChanges = false;
-            resizeMenuCounter(DOUBLING(TIME_SETTING_SIZE), menuItem);
+            resizeMenuCounter(DOUBLING(TIME_SETTING_SIZE), menuItem*2);
             count->encoderPosition = menuItem;
-            TIM2->CNT = menuItem*2;
         }
         else
         {
@@ -74,7 +73,6 @@ void drawTimeSetting(encoderData_t *count)
 
     resizeMenuCounter(TIME_SETTING_SIZE*2, START_MENU);
     count->encoderPosition = START_MENU;
-    TIM2->CNT = START_MENU;
 
     uint8_t exit = 1;
     while(exit)

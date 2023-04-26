@@ -15,6 +15,7 @@
 #include "../widgets/timeSetting.h"
 #include "../widgets/ChangBackground.h"
 #include "../rtc/rtc.h"
+#include "../sleepMode/sleepMode.h"
 
 
 void DrawMenu(encoderData_t *count)
@@ -22,7 +23,7 @@ void DrawMenu(encoderData_t *count)
     uint8_t exit = 1;
     while(exit)
     {
-        uint16_t colorText[MENU_ZIZE] = {digitColor, digitColor, digitColor, digitColor};
+        uint16_t colorText[MENU_ZIZE] = {digitColor, digitColor, digitColor, digitColor, digitColor};
 
 
         switch (count->encoderPosition)
@@ -64,13 +65,15 @@ void DrawMenu(encoderData_t *count)
 
         dispcolorFillScreen(bgColor);
 
-        dispcolorPrintf(85, 80, FONTID_16F, colorText[STOPWATCH], "%s", "Stopwatch");
-        dispcolorPrintf(20, 110, FONTID_16F, colorText[TIME_SETTING], "%s", "Setting the time and date");
-        dispcolorPrintf(60, 140, FONTID_16F, colorText[CHANG_BACKGROUND], "%s", "Background color");
+        dispcolorPrintf(85, 50, FONTID_16F, colorText[STOPWATCH], "%s", "Stopwatch");
+        dispcolorPrintf(20, 80, FONTID_16F, colorText[TIME_SETTING], "%s", "Setting the time and date");
+        dispcolorPrintf(60, 110, FONTID_16F, colorText[CHANG_BACKGROUND], "%s", "Background color");
+        dispcolorPrintf(60, 140, FONTID_16F, colorText[BRIGHTNESS_CHANGE], "%s", "Brightness change");
         dispcolorPrintf(105, 170, FONTID_16F, colorText[EXIT], "%s", "Exit");
 
         dispcolorUpdate();
 
         HAL_Delay(50);
+        sleepMode();
     }
 }

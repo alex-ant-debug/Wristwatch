@@ -12,7 +12,7 @@ static void MX_GPIO_Init(void);
 
 
 static encoderData_t encoder;
-static uint8_t encoderCounter = 0;
+static uint16_t encoderCounter = 0;
 bool isEncSecondOperation = false;
 
 
@@ -38,7 +38,8 @@ int main(void) {
         }
         else
         {
-            DrawClock();
+        	//DrawAnalogClock(0);//
+        	DrawClock();
         }
         sleepMode();
     }
