@@ -5,6 +5,6 @@
 
 
 void DrawClock(void);
-
+void DrawAnalogClock(uint8_t secBubbles);
 
 #endif /* SRC_WIDGETS_CLOCK_H_ */

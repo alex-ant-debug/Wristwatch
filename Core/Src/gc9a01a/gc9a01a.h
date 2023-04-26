@@ -36,6 +36,8 @@
   #define GC9A01A_BLK_Pin        GPIO_PIN_1
 #endif
 
+//uint16_t *ScreenBuff;
+
 uint16_t GC9A01A_GetWidth();
 uint16_t GC9A01A_GetHeight();
 
@@ -48,6 +50,7 @@ void GC9A01A_SetBL(uint8_t Value);
 void GC9A01A_DrawPixel(int16_t x, int16_t y, uint16_t color);
 uint16_t GC9A01A_GetPixel(int16_t x, int16_t y);
 void GC9A01A_FillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);
+void GC9A01A_FillCircle(int16_t x0, int16_t y0, int16_t radius, uint16_t color);
 void GC9A01A_DrawPartYX(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t *pBuff);
 void GC9A01A_DrawPartXY(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t *pBuff);
 

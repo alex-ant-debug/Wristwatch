@@ -59,5 +59,23 @@ void dispcolorFillCircleWu(int16_t x0, int16_t y0, int16_t radius, uint16_t colo
 void dispcolorDrawArc(int16_t x0, int16_t y0, int16_t radius, int16_t startAngle, int16_t endAngle, uint16_t color, uint8_t correction);
 int16_t dispcolorDrawString(int16_t X, int16_t Y, uint8_t FontID, char *Str, uint16_t TextColor);
 int16_t dispcolorPrintf(int16_t X, int16_t Y, uint8_t FontID, uint16_t TextColor, const char *args, ...);
+void dispcolor_DrawLine2(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color, uint8_t thick);
+void DrawPixel(int16_t x, int16_t y, uint16_t color, float intensity);
+
+void dispcolor_FillScreen(uint16_t color);
+
+uint16_t dispcolor_GetPixel(int16_t x, int16_t y);
+void dispcolor_DrawLine(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color);
+void dispcolor_FillCircle(int16_t x0, int16_t y0, int16_t radius, uint16_t color);
+void dispcolor_DrawLine_Wu(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color);
+uint8_t dispcolor_DrawChar(int16_t X, int16_t Y, uint8_t FontID, char Char, uint16_t TextColor);
+uint8_t dispcolor_DrawChar_Bg(int16_t X, int16_t Y, uint8_t FontID, char Char, uint16_t TextColor, uint16_t BgColor);
+int16_t dispcolor_DrawString(int16_t X, int16_t Y, uint8_t FontID, char *Str, uint16_t TextColor);
+int16_t dispcolor_printf(int16_t X, int16_t Y, uint8_t FontID, uint16_t TextColor, const char *args, ...);
+void dispcolor_DrawCircle_Wu(int16_t x0, int16_t y0, int16_t radius, uint16_t color);
+void dispcolor_FillCircleWu(int16_t x0, int16_t y0, int16_t radius, uint16_t color);
+void dispcolor_DrawArc(int16_t x0, int16_t y0, int16_t radius, int16_t startAngle, int16_t endAngle, uint16_t color, uint8_t thick);
+void dispcolor_Update();
+void dispcolor_FillRectangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t fillcolor);
 
 #endif

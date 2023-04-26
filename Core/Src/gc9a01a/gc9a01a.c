@@ -1,7 +1,9 @@
 #include <stm32f4xx_hal_gpio.h>
 #include <stm32f4xx_hal_rcc.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "dispcolor.h"
 #include "gc9a01a.h"
 #include "gpio.h"
@@ -82,11 +84,40 @@
 #define GC9A01A_Width      240
 #define GC9A01A_Height     240
 
+#define RADIUS             120
+#define Y_0                120
+#define X_0                120
 
 uint8_t GC9A01A_X_Start = 0, GC9A01A_Y_Start = 0;
 
+static uint16_t lineLength(uint16_t y)
+{
+	if(y > GC9A01A_Width)
+	{
+		return 0;
+	}
+
+    float x1 = ceilf(X_0 + sqrt(pow(RADIUS, 2) - pow(y - Y_0, 2)));
+    float x2 = floor(X_0 - sqrt(pow(RADIUS, 2) - pow(y - Y_0, 2)));
+
+    return x1 - x2;
+}
+
+static uint16_t numberPixelsRoundDisplay(uint16_t radius)
+{
+	uint16_t countPixel = 0;
+	uint16_t y1 = radius*2;
+
+	for(uint16_t y = 0; y < y1; y++)
+	{
+		countPixel += lineLength(y);
+	}
+	return countPixel;
+}
+
 #if (GC9A01_MODE == GC9A01_BUFFER_MODE)
-static uint16_t ScreenBuff[GC9A01A_Height * GC9A01A_Width];
+static uint16_t ScreenBuff[GC9A01A_Width*GC9A01A_Height];
+//static uint16_t ScreenBuff[45452];
 #endif
 
 static void SwapBytes(uint16_t *color)
@@ -208,6 +239,24 @@ void GC9A01A_SetWindow(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1)
 {
     ColumnSet(x0, x1);
     RowSet(y0, y1);
+
+    SendCmd(Cmd_RAMWR);
+}
+
+void GC9A01A_SetCircle(uint8_t x0, uint8_t y0, uint8_t radius)
+{
+    uint16_t countPixel = 0;
+	uint16_t y = radius*2 - 1;
+
+	for( ; y > 0; y--)
+	{
+	    float x1 = ceilf(X_0 + sqrt(pow(radius, 2) - pow(y - Y_0, 2)));
+	    float x2 = floor(X_0 - sqrt(pow(radius, 2) - pow(y - Y_0, 2)));
+//	    countPixel += x1 - x2;
+		ColumnSet(0, x1 - x2);
+
+	}
+	RowSet(0, y-1);
 
     SendCmd(Cmd_RAMWR);
 }
@@ -336,22 +385,31 @@ void GC9A01A_FillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color
 
 void GC9A01A_DrawPixel(int16_t x, int16_t y, uint16_t color)
 {
-    if((x < 0) || (x >= GC9A01A_Width) || (y < 0) || (y >= GC9A01A_Height))
-    {
-        return;
-    }
-    SwapBytes(&color);
+//	uint16_t width = lineLength(y);
+//    if((x < 0) || (x > width) || (y < 0) || (y > GC9A01A_Height))
+//    {
+//        return;
+//    }
+//    SwapBytes(&color);
+//
+//    ScreenBuff[y * width + x] = color;
 
-    ScreenBuff[y * GC9A01A_Width + x] = color;
+	if ((x < 0) || (x >= GC9A01A_Width) || (y < 0) || (y >= GC9A01A_Height))
+		return;
+
+	SwapBytes(&color);
+
+	ScreenBuff[y * GC9A01A_Width + x] = color;
 }
 
 uint16_t GC9A01A_GetPixel(int16_t x, int16_t y)
 {
-    if((x < 0) || (x >= GC9A01A_Width) || (y < 0) || (y >= GC9A01A_Height))
+	uint16_t width = lineLength(y);
+    if((x < 0) || (x >= width) || (y < 0) || (y >= GC9A01A_Height))
     {
         return 0;
     }
-    uint16_t color = ScreenBuff[y * GC9A01A_Width + x];
+    uint16_t color = ScreenBuff[y * width + x];
     SwapBytes(&color);
     return color;
 }
@@ -398,8 +456,35 @@ void GC9A01A_FillRect(int16_t x, int16_t y, int16_t w, int16_t h,
     }
 }
 
+void GC9A01A_FillCircle(int16_t x0, int16_t y0, int16_t radius, uint16_t color)
+{
+    uint16_t diameter = 2*radius;
+
+    if((radius > GC9A01A_Width) || (x0 > GC9A01A_Width) || (y0 > GC9A01A_Height))
+    {
+        return;
+    }
+
+    SwapBytes(&color);
+
+    for(uint16_t y = diameter-1; y > 0; y--)
+    {
+    	float x1 = ceilf(x0 + sqrt(pow(radius, 2) - pow(y-y0, 2)));
+    	float x2 = floor(x0 - sqrt(pow(radius, 2) - pow(y-y0, 2)));
+
+    	uint16_t len = x1 - x2;
+        for (uint16_t x = 0; x < len; x++)
+        {
+            ScreenBuff[y*len + x] = color;
+        }
+    }
+
+}
+
+
 void SendPart2()
 {
+//    uint16_t len = numberPixelsRoundDisplay(120);
     uint16_t len = GC9A01A_Width * GC9A01A_Height;
     SPI_send_dma(GC9A01A_SPI_periph, 0, (uint8_t*) &ScreenBuff[len / 2], len, 0);
 }
@@ -407,10 +492,12 @@ void SendPart2()
 void GC9A01A_Update()
 {
     GC9A01A_SetWindow(0, 0, GC9A01A_Width - 1, GC9A01A_Height - 1);
+//    GC9A01A_SetCircle(120, 120, 120);
 
     DC_HIGH();
     CS_LOW();
 
+//    uint16_t len = numberPixelsRoundDisplay(120);
     uint16_t len = GC9A01A_Width * GC9A01A_Height;
     SPI_send_dma(GC9A01A_SPI_periph, 0, (uint8_t*) ScreenBuff, len, SendPart2);
 }
@@ -474,6 +561,10 @@ void GC9A01A_Init()
 {
     GC9A01A_X_Start = 0;
     GC9A01A_Y_Start = 0;
+
+//#if (GC9A01_MODE == GC9A01_BUFFER_MODE)
+//    ScreenBuff = (uint16_t *)calloc((45452), sizeof(uint16_t));
+//#endif
 
     GPIO_init();
     spimInit(GC9A01A_SPI_periph, 1);
@@ -708,6 +799,7 @@ void GC9A01A_Init()
     GC9A01A_DisplayPower(1);
     HAL_Delay(20);
 
+//    GC9A01A_FillCircle(120, 120, 120, BLACK);//
     GC9A01A_FillRect(0, 0, GC9A01A_Width, GC9A01A_Height, BLACK);
     GC9A01A_Update();
     HAL_Delay(20);
