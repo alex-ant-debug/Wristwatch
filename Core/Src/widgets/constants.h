@@ -16,16 +16,17 @@
 #define NUMBER_SECONDS         60
 
 #define START_MENU              0
-#define MENU_ZIZE               4
+#define MENU_ZIZE               5
 #define STOPWATCH_MENU_SIZE     3
 #define TIME_SETTING_SIZE       9
 #define BACKGROUND_SIZE         4
+#define BRIGHTNESS_MENU_SIZE	2
 
 
 typedef struct encoderData_t
 {
     bool isEnter;
-    uint8_t encoderPosition;
+    uint16_t encoderPosition;
 }encoderData_t;
 
 

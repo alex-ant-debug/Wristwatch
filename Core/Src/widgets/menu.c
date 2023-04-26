@@ -52,6 +52,14 @@ void DrawMenu(encoderData_t *count)
                 drawChangBackground(count);
             }
             break;
+        case BRIGHTNESS_CHANGE:
+            colorText[BRIGHTNESS_CHANGE] = selectedText;
+            if(count->isEnter)
+            {
+                count->isEnter = false;
+                drawMenuBrightness(count);
+            }
+            break;
         case EXIT:
             colorText[EXIT] = selectedText;
             if(count->isEnter)
