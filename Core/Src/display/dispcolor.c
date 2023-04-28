@@ -516,33 +516,69 @@ static uint8_t dispcolorDrawChar_General(int16_t X, int16_t Y, uint8_t FontID,
             }
         }
     }
-    else
+    else if((FontID == FONTID_16F)||(FontID == FONTID_24F)||(FontID == FONTID_32F)||(FontID == FONTID_64F))
     {
         for (uint8_t row = 0; row < CharHeight; row++)
         {
             for (uint8_t col = 0; col < CharWidth; col++)
             {
-                if (col < 8)
+            	uint8_t colRemainder;
+            	uint8_t rowSize;
+
+            	if (col < 8)
+            	{
+            		colRemainder = 7 - col;
+            		rowSize = row * 2;
+            	}
+            	else
+            	{
+            		colRemainder = 15 - col;
+            		rowSize = (row * 2) + 1;
+            	}
+
+                if (pCharTable[rowSize] & (1 << colRemainder))
                 {
-                    if (pCharTable[row * 2] & (1 << (7 - col)))
-                    {
-                        dispcolorDrawPixel(X + col, Y + row, TextColor);
-                    }
-                    else if (!TransparentBg)
-                    {
-                        dispcolorDrawPixel(X + col, Y + row, BgColor);
-                    }
+                    dispcolorDrawPixel(X + col, Y + row, TextColor);
                 }
-                else
+                else if (!TransparentBg)
                 {
-                    if (pCharTable[(row * 2) + 1] & (1 << (15 - col)))
-                    {
-                        dispcolorDrawPixel(X + col, Y + row, TextColor);
-                    }
-                    else if (!TransparentBg)
-                    {
-                        dispcolorDrawPixel(X + col, Y + row, BgColor);
-                    }
+                    dispcolorDrawPixel(X + col, Y + row, BgColor);
+                }
+            }
+        }
+    }
+    else if (FontID == FONTID_64x2F)
+    {
+        for (uint8_t row = 0; row < CharHeight; row++)
+        {
+            for (uint8_t col = 0; col < CharWidth; col++)
+            {
+            	uint8_t colRemainder;
+            	uint8_t rowSize;
+
+            	if (col < 8)
+            	{
+            		colRemainder = 7 - col;
+            		rowSize = row * 3;
+            	}
+            	else if((col >= 8)&&(col < 16))
+            	{
+            		colRemainder = 15 - col;
+            		rowSize = (row * 3) + 1;
+            	}
+            	else
+            	{
+            		colRemainder = 23 - col;
+            		rowSize = (row * 3) + 2;
+            	}
+
+                if (pCharTable[rowSize] & (1 << colRemainder))
+                {
+                    dispcolorDrawPixel(X + col, Y + row, TextColor);
+                }
+                else if (!TransparentBg)
+                {
+                    dispcolorDrawPixel(X + col, Y + row, BgColor);
                 }
             }
         }

@@ -33,7 +33,7 @@ void DrawClock(void)
     dispcolorPrintf(65, 45, FONTID_24F, digitColor, "%02d.%02d.20%02d", date.Date,
             date.Month, date.Year);
 
-    dispcolorPrintf(55, 85, FONTID_64F, digitColor, "%02d : %02d : %02d", time.Hours,
+    dispcolorPrintf(25, 85, FONTID_64x2F, digitColor, "%02d:%02d:%02d", time.Hours,
             time.Minutes, time.Seconds);
 
     if(!time.Seconds)

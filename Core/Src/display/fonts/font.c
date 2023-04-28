@@ -4,6 +4,7 @@
 #include "f24f.h"
 #include "f32f.h"
 #include "f64f.h"
+#include "f64x2f.h"
 
 
 const t_font_getchar font_table_funcs[] = 
@@ -12,7 +13,8 @@ const t_font_getchar font_table_funcs[] =
   f10x16f_GetCharTable,
   f24f_GetCharTable,
   f32f_GetCharTable,
-  f64f_GetCharTable
+  f64f_GetCharTable,
+  f64x2f_GetCharTable
 };
 
 uint8_t *font_GetFontStruct(uint8_t FontID, char Char)

@@ -4,11 +4,12 @@
 #include <stdio.h>
 
 
-#define FONTID_6X8M  0
-#define FONTID_16F   1
-#define FONTID_24F   2
-#define FONTID_32F   3
-#define FONTID_64F   4
+#define FONTID_6X8M    0
+#define FONTID_16F     1
+#define FONTID_24F     2
+#define FONTID_32F     3
+#define FONTID_64F     4
+#define FONTID_64x2F   5
 
 #define     ________     0x0
 #define     _______X     0x1
